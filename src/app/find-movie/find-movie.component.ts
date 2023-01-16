@@ -1,6 +1,6 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { MovieDetailsService } from './_services/movie-details.service';
 
 @Component({
@@ -8,17 +8,23 @@ import { MovieDetailsService } from './_services/movie-details.service';
   templateUrl: './find-movie.component.html',
   styleUrls: ['./find-movie.component.scss']
 })
-export class FindMovieComponent implements AfterViewInit {
+export class FindMovieComponent implements OnInit {
   @ViewChild('details', { static: true }) details?: MatSidenav;
 
   constructor(
     private readonly router: Router,
+    private readonly activatedRoute: ActivatedRoute,
     private readonly movieDetailsService: MovieDetailsService
   ) {
   }
 
-  public ngAfterViewInit(): void {
+  public ngOnInit(): void {
     this.movieDetailsService.setSidenav(this.details!);
+    this.router.events.subscribe(res => {
+      if (res instanceof NavigationEnd && res.url === '/find-a-movie') {
+        this.movieDetailsService.closeSidenav();
+      }
+    })
   }
 
   public destroySidenav(): void {

@@ -4,7 +4,7 @@ import {
   RouterStateSnapshot,
   ActivatedRouteSnapshot
 } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { filter, map, Observable, of, tap } from 'rxjs';
 import { MovieDetailsService } from './movie-details.service';
 
 @Injectable({
@@ -24,6 +24,7 @@ export class MovieDetailsResolver implements Resolve<boolean> {
       this.movieDetailsService.loadMovieById(movieId);
       this.movieDetailsService.openSidenav();
     }
-    return of(true);
+
+    return of(false);
   }
 }

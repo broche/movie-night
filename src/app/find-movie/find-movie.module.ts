@@ -12,6 +12,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -24,9 +26,13 @@ import { MovieRatingPillComponent } from './movie-rating-pill/movie-rating-pill.
 import { FindMovieComponent } from './find-movie.component';
 import { FindMovieRoutingModule } from './find-movie-routing.module';
 import { MovieWatchProviderComponent } from './movie-watch-providers/movie-watch-providers.component';
+import { CastMemberCardComponent } from './cast-member-card/cast-member-card.component';
+import { CreditDetailsComponent } from './credit-details/credit-details.component';
 
 @NgModule({
   declarations: [
+    CastMemberCardComponent,
+    CreditDetailsComponent,
     MovieFiltersComponent,
     MovieListComponent,
     FindMovieComponent,
@@ -46,9 +52,11 @@ import { MovieWatchProviderComponent } from './movie-watch-providers/movie-watch
     MatCheckboxModule,
     MatChipsModule,
     MatInputModule,
+    MatToolbarModule,
     MatFormFieldModule,
     MatIconModule,
     MatProgressBarModule,
+    MatTooltipModule,
     MatSelectModule,
     MatSidenavModule,
     MatSliderModule,

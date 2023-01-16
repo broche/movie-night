@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { GenreResolver } from '../_shared/_services';
+import { CreditDetailsComponent } from './credit-details/credit-details.component';
 import { FindMovieComponent } from './find-movie.component';
 import { MovieDetailsComponent } from './movie-details/movie-details.component';
 import { MovieListComponent } from './movie-list/movie-list.component';
@@ -22,6 +23,14 @@ const routes: Routes = [
         resolve: {
           movie: MovieDetailsResolver
         },
+        outlet: 'details'
+      },
+      {
+        path: 'credit/:id',
+        component: CreditDetailsComponent,
+        // resolve: {
+        //   movie: CreditDetailsResolver
+        // },
         outlet: 'details'
       }
     ]

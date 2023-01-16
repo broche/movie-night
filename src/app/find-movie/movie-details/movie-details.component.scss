@@ -1,11 +1,26 @@
 :host {
   display: block;
   height: 100%;
-  width: 800px;
+  width: 750px;
   .movie-details {
-    position: relative;
-    height: 100%;
-    width: 100%;
+    .content {
+      width: 100%;
+      display:block;
+      background: rgb(0,0,0);
+      background: linear-gradient(0deg, rgba(0,0,0,0.8911939775910365) 0%, rgba(0,0,0,0.8435749299719888) 14%, rgba(0,0,0,0.7567401960784313) 24%, rgba(0,0,0,0.6026785714285714) 38%, rgba(0,0,0,0.39539565826330536) 48%, rgba(0,0,0,0.16290266106442575) 59%, rgba(0,0,0,0) 81%, rgba(0,0,0,0.5298494397759104) 91%, rgba(0,0,0,0.7763480392156863) 100%);
+
+      box-shadow: 0 2px 4px -1px #0003, 0 4px 5px #00000024, 0 1px 10px #0000001f;
+      .overview {
+        font-size: 16px;
+        line-height: 30px;;
+      }
+
+      .inner {
+        position: relative;
+        min-height: 450px;
+        padding: 1.5rem;
+      }
+    }
     .image-backdrop {
       z-index: -1;
       position: absolute;
@@ -16,23 +31,17 @@
       background-size: cover;
       background-position: center;
     }
-    .content {
-      display:block;
-      height: 100%;
-      width: 100%;
+    .additional {
       padding: 1.5rem;
-      background-color: rgba(0,0,0,0.8);
-
-      .overview {
-        font-size: 16px;
-        line-height: 30px;;
-      }
-      .extra {
-        color: rgb(153, 153, 153);
-      }
-      app-movie-card {
-        margin-right: 0.5rem;
-      }
+    }
+    .extra {
+      color: rgb(153, 153, 153);
+    }
+    app-movie-card {
+      margin-right: 0.5rem;
+    }
+    app-cast-member-card {
+      margin-right: 0.5rem;
     }
   }
 }

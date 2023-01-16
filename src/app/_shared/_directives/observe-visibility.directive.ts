@@ -14,14 +14,17 @@ export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewI
       entry.isIntersecting && this.visible.emit();
     }, {
       rootMargin: '0px',
-      // threshold: 1,
+      threshold: 0,
     });
 
-    this.observer.observe(this.element.nativeElement);
+    
   }
   ngOnInit() { }
   ngAfterViewInit() {
-
+    this.observer.observe(this.element.nativeElement);
+    this.visible.emit()
+    this.visible.emit()
+    this.visible.emit()
   }
 
   ngOnDestroy() {

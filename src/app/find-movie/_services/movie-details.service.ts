@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, filter, map, Observable, take } from 'rxjs';
 import { IMovie, Movie } from '../../_shared/_models';
 import { MatSidenav } from '@angular/material/sidenav';
 import { IWatchProviderResponse, WatchProvider } from 'src/app/_shared/_models/watch-provider.model';
 import { TMDBResult } from 'src/app/_shared/_models/tmdb-result.model';
 import { GenreService } from 'src/app/_shared/_services';
+import { IMovieCreditResponse, MovieCredit } from 'src/app/_shared/_models/movie-credit.model';
 
 @Injectable({
   providedIn: 'root'
@@ -26,13 +27,22 @@ export class MovieDetailsService {
   public readonly similarMovies$: Observable<Array<Movie> | undefined>;
   private readonly _similarMovies: BehaviorSubject<Array<Movie> | undefined> = new BehaviorSubject<Array<Movie> | undefined>(undefined);
 
+  public readonly castMembers$: Observable<Array<MovieCredit> | undefined>;
+  private readonly _castMembers: BehaviorSubject<Array<MovieCredit> | undefined> = new BehaviorSubject<Array<MovieCredit> | undefined>(undefined);
+
+  public readonly crewMembers$: Observable<Array<MovieCredit> | undefined>;
+  private readonly _crewMembers: BehaviorSubject<Array<MovieCredit> | undefined> = new BehaviorSubject<Array<MovieCredit> | undefined>(undefined);
+  public readonly director$: Observable<MovieCredit | undefined>;
+
   public readonly isLoading$: Observable<boolean>;
   private readonly _isLoading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   private get movieId(): number | undefined {
     return this._movie.value?.id;
   }
-  private _detailsSidenav?: MatSidenav;
+
+  public detailsSidenav$: Observable<MatSidenav | undefined>;
+  private _detailsSidenav: BehaviorSubject<MatSidenav | undefined> = new BehaviorSubject<MatSidenav | undefined>(undefined);
 
   constructor(
     private readonly http: HttpClient,
@@ -42,15 +52,38 @@ export class MovieDetailsService {
     this.streamingOptions$ = this._streamingOptions.asObservable();
     this.rentalOptions$ = this._rentalOptions.asObservable();
     this.similarMovies$ = this._similarMovies.asObservable();
+    this.castMembers$ = this._castMembers.asObservable();
+    this.crewMembers$ = this._crewMembers.asObservable();
+    this.detailsSidenav$ = this._detailsSidenav.asObservable();
     this.isLoading$ = this._isLoading.asObservable();
+    this.director$ = this.crewMembers$
+      .pipe(
+        map(a => a?.filter(b => b.job === 'Director')[0])
+      )
   }
 
   public setSidenav(sidenav: MatSidenav): void {
-    this._detailsSidenav = sidenav;
+    this._detailsSidenav?.next(sidenav);
   }
 
   public openSidenav(): void {
-    this._detailsSidenav?.open();
+    if (this._detailsSidenav.value) {
+      this._detailsSidenav.value.open();
+    } else {
+      this.detailsSidenav$
+      .pipe(
+        filter(a => !!a),
+        take(1)
+      )
+      .subscribe(r => {
+        r?.open();
+      });
+    }
+  }
+  public closeSidenav(): void {
+    if (this._detailsSidenav.value) {
+      this._detailsSidenav.value.close();
+    }
   }
 
   public loadMovieById(id: string): void {
@@ -63,11 +96,11 @@ export class MovieDetailsService {
       .subscribe(movie => {
         this._movie.next(movie);
 
-        // this._loadCredits();
-        this._loadWatchProviders();
+        this._loadCredits(id);
+        this._loadWatchProviders(id);
         // this._loadImages();
         // this._loadReviews();
-        this._loadSimilarMovies();
+        this._loadSimilarMovies(id);
         // this._loadRecommendations();
         // this._loadVideos();
       })
@@ -78,6 +111,8 @@ export class MovieDetailsService {
     this._streamingOptions.next(undefined);
     this._rentalOptions.next(undefined);
     this._similarMovies.next(undefined);
+    this._castMembers.next(undefined);
+    this._crewMembers.next(undefined);
   }
 
   private _getMovieDetails(id: string): Observable<Movie> {
@@ -85,8 +120,8 @@ export class MovieDetailsService {
       .pipe(map(a => new Movie(a)))
   }
   
-  private _loadWatchProviders(): void {
-    this.http.get<IWatchProviderResponse>(`https://api.themoviedb.org/3/movie/${this.movieId}/watch/providers?api_key=${MovieDetailsService.API_KEY}&language=en-US`)
+  private _loadWatchProviders(id: string): void {
+    this.http.get<IWatchProviderResponse>(`https://api.themoviedb.org/3/movie/${id}/watch/providers?api_key=${MovieDetailsService.API_KEY}&language=en-US`)
       .pipe(
         map(a => a.results.US)
       ).subscribe(res => {
@@ -94,12 +129,28 @@ export class MovieDetailsService {
         this._streamingOptions.next(res.flatrate?.map(a => new WatchProvider(a)) ?? [])
       })
   }
-  private _loadSimilarMovies(): void {
-    this.http.get<TMDBResult<IMovie>>(`https://api.themoviedb.org/3/movie/${this.movieId}/similar?api_key=${MovieDetailsService.API_KEY}&language=en-US`)
+
+  private _loadSimilarMovies(id: string): void {
+    this.http.get<TMDBResult<IMovie>>(`https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=${MovieDetailsService.API_KEY}&language=en-US`)
       .pipe(
         map(a => a.results.splice(0, 5))
       ).subscribe(res => {
         this._similarMovies.next(res.map(a => new Movie(a, this.genreService.genres)));
+      });
+  }
+
+  private _loadCredits(id: string): void {
+    this.http.get<IMovieCreditResponse>(`https://api.themoviedb.org/3/movie/${id}/credits?api_key=${MovieDetailsService.API_KEY}&language=en-US`)
+      .pipe(
+        map(a => { 
+          return {
+            cast: a.cast.splice(0, 8), 
+            crew: a.crew.splice(0, 8) 
+          };
+        })
+      ).subscribe(res => {
+        this._castMembers.next(res.cast.map(a => new MovieCredit(a)));
+        this._crewMembers.next(res.crew.map(a => new MovieCredit(a)));
       });
   }
 }

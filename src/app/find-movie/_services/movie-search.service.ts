@@ -49,6 +49,9 @@ export class MovieSearchService {
 
   public search(params: IFindMovieFilters): void {
     localStorage.removeItem('movie-list');
+    this._totalPages.next(1);
+    this._currentPage.next(0);
+    this._totalResults.next(undefined);
     this.loadMovies(params);
   }
 
@@ -58,7 +61,7 @@ export class MovieSearchService {
     }
   }
 
-  private loadMovies(params: IFindMovieFilters, options?: { concat?: boolean }) {
+  private loadMovies(params: IFindMovieFilters, options?: { concat?: boolean, additionalLoads?: number }) {
     this._params = params;
     this._isLoading.next(true);
     this._search(this._params!, this._currentPage.value + 1)
@@ -78,7 +81,11 @@ export class MovieSearchService {
         this._updateMovieList(options?.concat
           ? this._movieResults.value.concat(movies)
           : movies
-        )
+        );
+
+        if (options?.additionalLoads ?? 0 > 0) {
+          this.loadMovies(params, { concat: true, additionalLoads: options?.additionalLoads! - 1 });
+        }
       });
   }
 
