@@ -1,0 +1,38 @@
+:host {
+  display: block;
+  height: 100%;
+  width: 800px;
+  .movie-details {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    .image-backdrop {
+      z-index: -1;
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 100%;
+      background-size: cover;
+      background-position: center;
+    }
+    .content {
+      display:block;
+      height: 100%;
+      width: 100%;
+      padding: 1.5rem;
+      background-color: rgba(0,0,0,0.8);
+
+      .overview {
+        font-size: 16px;
+        line-height: 30px;;
+      }
+      .extra {
+        color: rgb(153, 153, 153);
+      }
+      app-movie-card {
+        margin-right: 0.5rem;
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+<mat-sidenav-container autosize>
+  <mat-sidenav opened mode="side" [fixedInViewport]="true">
+    <app-movie-filters></app-movie-filters>
+  </mat-sidenav>
+  <mat-sidenav 
+    mode="over" 
+    position="end" 
+    [fixedInViewport]="true" 
+    #details (closedStart)="destroySidenav()">
+    <router-outlet name="details"></router-outlet>
+  </mat-sidenav>
+  <router-outlet></router-outlet>
+</mat-sidenav-container>

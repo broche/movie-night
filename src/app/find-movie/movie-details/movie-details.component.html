@@ -1,0 +1,40 @@
+<ng-container *ngIf="movie$ | async as movie">
+  <div class="movie-details">
+    <div class="content">
+      <div class="d-flex align-items-center justify-content-between mb-4">
+        <h1 class="m-0">{{movie.title}} ({{movie.releaseDate | date: 'y'}})</h1>  
+        <app-movie-rating-pill [rating]="movie.voteAverage" size="lg"></app-movie-rating-pill>
+      </div>
+      <p class="overview mb-4">{{movie.overview}}</p>
+      <mat-chip-listbox>
+        <mat-chip-option *ngFor="let genre of movie.genres">
+          {{ genre.name }}
+        </mat-chip-option>
+      </mat-chip-listbox>
+      <hr>
+      <app-movie-watch-providers [watchProviders]="rentalOptions$ | async">Rental Options</app-movie-watch-providers>
+      <hr>
+      <app-movie-watch-providers [watchProviders]="streamingOptions$ | async">Streaming Options</app-movie-watch-providers>
+      <hr>
+      <p>Similar Movies</p>
+      <div class="d-flex align-items-center">
+        <ng-container *ngFor="let movie of similarMovies$ | async">
+          <a [routerLink]="['/find-a-movie', { outlets: { details: ['movie', movie.id] } }]" >
+            <app-movie-card [movie]="movie" size="sm" ></app-movie-card>
+          </a>
+        </ng-container>
+      </div>
+      <hr>
+      <div class="extra">
+        <p>Release Date: {{movie.releaseDate | date}}</p>
+        <p>Runtime: {{movie.runtime}}</p>
+        <p>Revenue: {{movie.revenue | currency}}</p>
+        <p>Budget: {{movie.budget | currency}}</p>
+      </div>
+    </div>
+    <div class="image-backdrop" [style.background-image]="'url(' + movie.backdrop + ')'">
+    </div>
+  </div>
+  
+</ng-container>
+

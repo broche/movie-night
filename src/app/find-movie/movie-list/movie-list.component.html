@@ -1,0 +1,12 @@
+<div class="movie-results d-flex flex-wrap justify-content-center">
+  <ng-container *ngFor="let movie of movieResults$ | async">
+    <a [routerLink]="[{ outlets: { details: ['movie', movie.id] } }]">
+      <app-movie-card [movie]="movie"></app-movie-card>
+    </a>
+  </ng-container>
+</div>
+<ng-container *ngIf="canLoadMore$ | async">
+  <div appObserveVisibility (visible)="loadMore()">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </div>
+</ng-container>

@@ -1,0 +1,11 @@
+<div class="movie-card {{ size }}">
+  <div class="movie-card-overlay d-flex align-items-start justify-content-end flex-column">
+    <p class="title">{{movie.title}}</p>
+    <div><span *ngFor="let genre of movie.genres | slice: 0:1" class="genre">{{genre.name}}</span></div>
+    <!-- <div class="overview">{{movie.overview}}</div> -->
+  </div>
+  <div class="movie-card-image">
+    <app-movie-rating-pill [rating]="movie.voteAverage"></app-movie-rating-pill>
+    <img mat-card-image [src]="movie.poster">
+  </div>
+</div>
