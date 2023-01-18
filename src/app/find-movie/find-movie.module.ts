@@ -9,9 +9,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -27,16 +29,19 @@ import { FindMovieComponent } from './find-movie.component';
 import { FindMovieRoutingModule } from './find-movie-routing.module';
 import { MovieWatchProviderComponent } from './movie-watch-providers/movie-watch-providers.component';
 import { CastMemberCardComponent } from './cast-member-card/cast-member-card.component';
-import { CreditDetailsComponent } from './credit-details/credit-details.component';
+import { VideoComponent } from '../_shared/components/video/video.component';
+import { PersonDetailsComponent } from './person-details/person-details.component';
+import { ImageFallbackDirective } from '../_shared/_directives/image-fallback.directive';
 
 @NgModule({
   declarations: [
     CastMemberCardComponent,
-    CreditDetailsComponent,
+    PersonDetailsComponent,
     MovieFiltersComponent,
     MovieListComponent,
     FindMovieComponent,
     ObserveVisibilityDirective,
+    ImageFallbackDirective,
     MovieCardComponent,
     MovieListItemComponent,
     MovieDetailsComponent,
@@ -44,6 +49,7 @@ import { CreditDetailsComponent } from './credit-details/credit-details.componen
     MovieWatchProviderComponent
   ],
   imports: [
+    VideoComponent,
     FindMovieRoutingModule,
     CommonModule,
     HttpClientModule,
@@ -51,11 +57,13 @@ import { CreditDetailsComponent } from './credit-details/credit-details.componen
     MatCardModule,
     MatCheckboxModule,
     MatChipsModule,
+    MatDividerModule,
     MatInputModule,
     MatToolbarModule,
     MatFormFieldModule,
     MatIconModule,
     MatProgressBarModule,
+    MatTabsModule,
     MatTooltipModule,
     MatSelectModule,
     MatSidenavModule,

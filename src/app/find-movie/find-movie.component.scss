@@ -1,23 +1,20 @@
-.details-wrap {
-  width: 100%;
-  height: 100%;
+.main {
+  // padding: 0.45rem 2.25rem 0.45rem 2.25rem;
+  padding: 0;
   position: relative;
+  height: 100vh;
+  overflow-y: scroll;
 
-  & > a {
-    position: absolute;
-    z-index: 1;
-    color: white;
-  }
 }
-.menu-toggle {
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  z-index: 10;
-  cursor: pointer;
-  mat-icon {
-    height: 28px;
-    width: 28px;
-    font-size: 28px;
+.toggle-wrapper {
+  position: absolute;
+  top: 0;
+  z-index: 100;
+  &.left { left: 0; }
+  &.right { right: 56px; }
+  .toggle {
+    position: fixed;
+    padding: 1rem;
+    cursor: pointer;
   }
 }

@@ -1,10 +1,10 @@
 import { Genre } from "../../_shared/_models/genre.model";
 
 export interface IFindMovieFilters {
-    genres: Array<Genre>,
-    nonGenres: Array<Genre>,
-    yearMin: string,
-    yearMax: string,
+    genres: Array<number>,
+    excludedGenres: Array<number>,
+    yearMin: number,
+    yearMax: number,
     ratingMin: number,
     ratingMax: number,
     runtimeMin: number,

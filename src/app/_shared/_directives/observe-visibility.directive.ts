@@ -23,8 +23,6 @@ export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewI
   ngAfterViewInit() {
     this.observer.observe(this.element.nativeElement);
     this.visible.emit()
-    this.visible.emit()
-    this.visible.emit()
   }
 
   ngOnDestroy() {

@@ -1,0 +1,39 @@
+:host {
+  display: block;
+  height: 100%;
+  width: 760px;
+  
+  mat-divider {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+  .movie-details {
+    .header {
+      padding: 1rem;
+      width: 100%;
+      display:block;
+      background: rgb(0,0,0);
+      // background: linear-gradient(0deg, rgba(0,0,0,0.8911939775910365) 0%, rgba(0,0,0,0.8435749299719888) 14%, rgba(0,0,0,0.7567401960784313) 24%, rgba(0,0,0,0.6026785714285714) 38%, rgba(0,0,0,0.39539565826330536) 48%, rgba(0,0,0,0.16290266106442575) 59%, rgba(0,0,0,0) 81%, rgba(0,0,0,0.5298494397759104) 91%, rgba(0,0,0,0.7763480392156863) 100%);
+
+      box-shadow: 0 2px 4px -1px #0003, 0 4px 5px #00000024, 0 1px 10px #0000001f;
+      
+    .person-image {
+      width: 50px;
+      height: 80px;
+      border-radius: 100px;
+    }
+    }
+
+    .additional {
+      padding: 1.5rem;
+      // padding-top: 0;
+    }
+    .extra {
+      color: rgb(153, 153, 153);
+    }
+    app-movie-card {
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+  }
+}

@@ -100,13 +100,13 @@ export class MovieSearchService {
     const request: TMDBDiscoverRequest | any = {
       page: page ?? 1,
       sort_by: params.sortBy,
-      'release_date.gte': params.yearMin,
-      'release_date.lte': params.yearMax,
+      'primary_release_date.gte': params.yearMin,
+      'primary_release_date.lte': params.yearMax,
       // with_release_type: 
       'vote_average.gte': params.ratingMin,
       'vote_average.lte': params.ratingMax,
-      with_genres: !!params.genres ? params.genres?.map(a => a.id).join(',') : [],
-      without_genres: !!params.nonGenres ? params.nonGenres?.map(a => a.id).join(',') : [],
+      with_genres: !!params.genres ? params.genres?.join('|') : [],
+      without_genres: !!params.excludedGenres ? params.excludedGenres?.join(',') : [],
       'with_runtime.gte': params.runtimeMin,
       'with_runtime.lte': params.runtimeMax,
       'vote_count.gte': params.minimumVoteCount

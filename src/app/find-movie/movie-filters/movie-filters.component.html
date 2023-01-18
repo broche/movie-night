@@ -1,47 +1,64 @@
 <form (ngSubmit)="submit()" [formGroup]="form" class="d-flex flex-column">
+
   <mat-form-field appearance="outline">
-    <mat-label>Genres</mat-label>
-    <mat-select [multiple]="true" formControlName="genres">
-      <mat-select-trigger>
-        {{selectedGenres?.[0]?.name || ''}}
-        <span *ngIf="(selectedGenres?.length || 0) > 1">
-          (+{{(selectedGenres?.length || 0) - 1}} {{selectedGenres?.length === 2 ? 'other' : 'others'}})
-        </span>
-      </mat-select-trigger>
-      <mat-option *ngFor="let genre of genres$ | async" [value]="genre">{{genre.name}}</mat-option>
+    <mat-label>Sort By</mat-label>
+    <mat-select formControlName="sortBy">
+      <mat-option *ngFor="let option of sortByOptions" [value]="option.value">{{option.label}}</mat-option>
     </mat-select>
   </mat-form-field>
-  <hr>
-  <mat-form-field appearance="outline">
-    <mat-label>Not theseGenres</mat-label>
-    <mat-select [multiple]="true" formControlName="nonGenres">
-      <mat-select-trigger>
-        {{selectedNonGenres?.[0]?.name || ''}}
-        <span *ngIf="(selectedNonGenres?.length || 0) > 1">
-          (+{{(selectedNonGenres?.length || 0) - 1}} {{selectedNonGenres?.length === 2 ? 'other' : 'others'}})
-        </span>
-      </mat-select-trigger>
-      <mat-option *ngFor="let genre of genres$ | async" [value]="genre">{{genre.name}}</mat-option>
-    </mat-select>
-  </mat-form-field>
-  <hr>
-  <div class="d-flex flex-column">
-    <label>Year Range</label>
+  
+
+  <mat-divider></mat-divider>
+  <ng-container *ngIf="genresLoaded$ | async">
+
+    <ng-container *ngIf="genreMap$ | async as genreMap">
+    
+      <mat-form-field appearance="outline">
+        <mat-label>Genres</mat-label>
+        <mat-select [multiple]="true" formControlName="genres">
+          <mat-select-trigger>
+            {{selectedGenreIds.length > 0 && genreMap[selectedGenreIds[0]]?.name}}
+            <span *ngIf="(selectedGenreIds.length || 0) > 1">
+              (+{{(selectedGenreIds.length || 0) - 1}} {{selectedGenreIds.length === 2 ? 'other' : 'others'}})
+            </span>
+          </mat-select-trigger>
+          <mat-option *ngFor="let genre of genres$ | async" [value]="genre.id">{{genre.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-divider></mat-divider>
+      <mat-form-field appearance="outline">
+        <mat-label>Excluded Genres</mat-label>
+        <mat-select [multiple]="true" formControlName="excludedGenres">
+          <mat-select-trigger>
+            {{excludedGenreIds.length > 0 && genreMap[excludedGenreIds[0]]?.name}}
+            <span *ngIf="(excludedGenreIds?.length || 0) > 1">
+              (+{{(excludedGenreIds.length || 0) - 1}} {{excludedGenreIds.length === 2 ? 'other' : 'others'}})
+            </span>
+          </mat-select-trigger>
+          <mat-option *ngFor="let genre of genres$ | async" [value]="genre.id">{{genre.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </ng-container>
+  </ng-container>
+  <mat-divider></mat-divider>
+  <div class="d-flex flex-column pad">
+    <label>Released: <strong>{{form.controls['yearMin'].value}}</strong> - <strong>{{form.controls['yearMax'].value}}</strong></label>
     <mat-slider
         class="rating"
         max="2023"
         min="1900"
         step="1"
-        [discrete]="true"
-        [showTickMarks]="true">
+        [discrete]="false"
+        [showTickMarks]="true"
+        position="end">
       <input matSliderStartThumb formControlName="yearMin">
       <input matSliderEndThumb formControlName="yearMax">
     </mat-slider>
   </div>
   
-  <hr>
-  <div class="d-flex flex-column">
-    <label>Rating Range</label>
+  <mat-divider></mat-divider>
+  <div class="d-flex flex-column pad">
+    <label>Rating: <strong>{{form.controls['ratingMin'].value}}</strong> - <strong>{{form.controls['ratingMax'].value}}</strong></label>
     <mat-slider
         class="rating"
         [max]="10"
@@ -54,22 +71,9 @@
     </mat-slider>
   </div>
   
-  <hr>
-  <div class="d-flex flex-column">
-    <label>Minimum Vote Count</label>
-    <mat-slider
-        class="rating"
-        [max]="10000"
-        [min]="1"
-        [step]="100"
-        [discrete]="true"
-        [showTickMarks]="true">      
-      <input matSliderThumb formControlName="minimumVoteCount">
-    </mat-slider>
-  </div>
-  <hr>
-  <div class="d-flex flex-column">
-    <label>Runtime Range</label>
+  <mat-divider></mat-divider>
+  <div class="d-flex flex-column pad">
+    <label>Runtime: <strong>{{form.controls['runtimeMin'].value}}</strong> - <strong>{{form.controls['runtimeMax'].value}}</strong></label>
     <mat-slider
         class="rating"
         [max]="220"
@@ -81,26 +85,53 @@
       <input matSliderEndThumb formControlName="runtimeMax">
     </mat-slider>
   </div>
-  <hr>
-  <mat-form-field appearance="outline">
-    <mat-label>Sort By</mat-label>
-    <mat-select formControlName="sortBy">
-      <mat-option *ngFor="let option of sortByOptions" [value]="option.value">{{option.label}}</mat-option>
-    </mat-select>
-  </mat-form-field>
-  <hr>
+  
+  <mat-divider></mat-divider>
+  <div class="d-flex flex-column pad">
+    <label>Reviews: <strong>{{form.controls['minimumVoteCount'].value}}</strong> minimum</label>
+    <mat-slider
+        class="rating"
+        [max]="10000"
+        [min]="1"
+        [step]="100"
+        [discrete]="true"
+        [showTickMarks]="true">      
+      <input matSliderThumb formControlName="minimumVoteCount">
+    </mat-slider>
+  </div>
+  
+<!--   
+  <ng-container *ngFor="let genre of genres$ | async">
+    <mat-divider></mat-divider>
+    <mat-checkbox 
+      [checked]="(genreMap[genre.id]?.state ?? 0) === 1"
+      [indeterminate]="(genreMap[genre.id]?.state ?? 0) === 2"
+      (change)="updateGenreMap($event, genre)">
+      <span 
+        [class.included]="genreMap[genre.id]?.state === 1"
+        [class.excluded]="genreMap[genre.id]?.state === 2"
+      >
+        {{genre.name}}
+      </span>
+
+    </mat-checkbox>
+  </ng-container> -->
   <!-- <div>
     <mat-checkbox formControlName="includeAdult">Include Adult</mat-checkbox>
   </div> -->
 
-  <button mat-raised-button color="primary" type="submit">Submit</button>
-  <hr>
-  <ng-container *ngIf="totalResults$ | async as totalResults">
+  <mat-divider></mat-divider>
+  <div class="pad d-flex align-items-center justify-content-center">
+    <button mat-raised-button color="primary" type="submit" class="mx-2">Submit</button>
+    <button mat-flat-button type="button" (click)="clearFilters()">Clear</button>
+  </div>
+  
+  <!-- <ng-container *ngIf="totalResults$ | async as totalResults">
     <p>Total Results: {{totalResults}}</p>
-  </ng-container>
+  </ng-container> -->
 </form>
-<!-- 
-<pre>
+
+<!-- <pre>
   {{ form.value | json }}
 </pre> -->
 

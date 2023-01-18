@@ -2,51 +2,96 @@
   <div class="movie-details">
     <div class="content">
       <div class="inner d-flex flex-column justify-content-between">
-        <div class="d-flex align-items-center justify-content-between mb-5">
-          <h1 class="m-0">{{movie.title}} ({{movie.releaseDate | date: 'y'}})</h1>
-          <app-movie-rating-pill [rating]="movie.voteAverage" size="lg"></app-movie-rating-pill>
-        </div>
-        <div>
-          <p class="overview pt-2 mb-4">{{movie.overview}}</p>
-          <mat-chip-listbox>
-            <mat-chip-option *ngFor="let genre of movie.genres">
-              {{ genre.name }}
-            </mat-chip-option>
-          </mat-chip-listbox>
-        </div>
-        <div class="image-backdrop" [style.background-image]="'url(' + movie.backdrop + ')'">
-        </div>
+        <ng-container *ngIf="!(isWatching$ | async)">
+          <div class="d-flex align-items-center justify-content-between mb-5">
+            <h1 class="m-0">{{movie.title}} ({{movie.releaseDate | date: 'y'}})</h1>
+            <app-movie-rating-pill [rating]="movie.voteAverage" size="lg"></app-movie-rating-pill>
+          </div>
+          <ng-container *ngIf="trailerId$ | async as trailerId">
+            <div class="d-flex align-items-center justify-content-center w-100">
+              <!-- <button mat-fab color="accent" [routerLink]="['/find-a-movie', { outlets: { details: ['trailer', trailerId] } }]"><mat-icon>play_arrow</mat-icon></button> -->
+              <button mat-fab color="primary" (click)="playTrailer()"><mat-icon>play_arrow</mat-icon></button>
+            </div>
+          </ng-container>
+          <div>
+            <p class="overview pt-2 mb-3">{{movie.overview}}</p>
+            <mat-divider></mat-divider>
+            <div class="d-flex align-items-center justify-content-between">
+              <mat-chip-listbox>
+                <mat-chip *ngFor="let genre of movie.genres">
+                  {{ genre.name }}
+                </mat-chip>
+              </mat-chip-listbox>
+              <div>{{movie.runtime}} minutes</div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="isWatching$ | async; else imageBackdrop">
+          <ng-container *ngIf="trailerId$ | async as trailerId; else noTrailer">
+            <app-video [videoId]="trailerId" [autoplay]="true"></app-video>
+          </ng-container>
+          <button class="close-trailer" mat-mini-fab color="primary" (click)="stopTrailer()">
+            <mat-icon>close</mat-icon>
+          </button>
+        </ng-container>
+        <ng-template #noTrailer>
+          <div class="text-center m-5">
+            No trailer available...
+          </div>
+        </ng-template>
+        <ng-template #imageBackdrop>
+          <div class="image-backdrop" [style.background-image]="'url(' + movie.backdrop + ')'"></div>
+        </ng-template>
       </div>
     </div>
     <div class="additional">
-      <!-- <app-movie-watch-providers [watchProviders]="rentalOptions$ | async">Rental Options</app-movie-watch-providers>
-      <hr> -->
-      <app-movie-watch-providers [watchProviders]="streamingOptions$ | async">Streaming Options</app-movie-watch-providers>
-      <hr>
+      <!-- <mat-tab-group>
+        <mat-tab label="Stream">
+          <app-movie-watch-providers [watchProviders]="streamingOptions$ | async"></app-movie-watch-providers>
+        </mat-tab>
+        <mat-tab label="Rent">
+          <app-movie-watch-providers [watchProviders]="rentalOptions$ | async"></app-movie-watch-providers>
+        </mat-tab>
+        <mat-tab label="Buy">
+          <app-movie-watch-providers [watchProviders]="purchaseOptions$ | async"></app-movie-watch-providers>
+        </mat-tab>
+      </mat-tab-group> -->
+      <app-movie-watch-providers [watchProviders]="streamingOptions$ | async">
+        <p>Streaming</p>
+      </app-movie-watch-providers>
+
+      <mat-divider></mat-divider>
       <p>Top Billed Cast</p>
       <div class="d-flex align-items-center">
         <ng-container *ngFor="let credit of castMembers$ | async">
-          <a [routerLink]="['/find-a-movie', { outlets: { details: ['credit', credit.id] } }]">
+          <a [routerLink]="['/find-a-movie', { outlets: { details: ['person', credit.personId] } }]">
             <app-cast-member-card [credit]="credit" size="sm"></app-cast-member-card>
           </a>
         </ng-container>
       </div>
-      <hr>
+      <mat-divider></mat-divider>
       <p>You might also like...</p>
-      <div class="d-flex align-items-center">
+      <div class="d-flex align-items-center flex-wrap">
         <ng-container *ngFor="let movie of similarMovies$ | async">
           <a [routerLink]="['/find-a-movie', { outlets: { details: ['movie', movie.id] } }]">
             <app-movie-card [movie]="movie" size="sm"></app-movie-card>
           </a>
         </ng-container>
       </div>
-      <hr>
+      <mat-divider></mat-divider>
+      <!-- <p>Images</p>
+      <div class="d-flex align-items-center flex-wrap">
+        <ng-container *ngFor="let image of (posterImages$ | async) | slice:0:10">
+          <img class="poster-image" [src]="image.path" />
+        </ng-container>
+      </div>
+      <mat-divider></mat-divider> -->
+      
       <div class="extra">
         <ng-container *ngIf="director$ | async as director">
           <p>Director: {{director.name}}</p>
         </ng-container>
         <p>Release Date: {{movie.releaseDate | date}}</p>
-        <p>Runtime: {{movie.runtime}}</p>
         <p>Revenue: {{movie.revenue | currency}}</p>
         <p>Budget: {{movie.budget | currency}}</p>
       </div>

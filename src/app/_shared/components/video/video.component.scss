@@ -1,0 +1,40 @@
+:host {
+  display: block;
+}
+.cast-member-card {
+  position: relative;
+  .cast-member-card-image {
+    position: relative;
+    img {
+      width: 220px;
+      height: 330px;
+      margin: 0.5px;
+    }
+  }
+  .cast-member-card-overlay {
+    padding: 1rem;
+    z-index: 1;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    // opacity: 0.9;
+    background: rgb(0,0,0);
+    background: linear-gradient(0deg, rgba(0,0,0,0.7455357142857143) 0%, rgba(0,0,0,0.7231267507002801) 10%, rgba(0,0,0,0.5046393557422969) 28%, rgba(0,0,0,0) 43%);
+    color: white;
+    display: flex;
+    align-items: flex-end;
+    .title {
+      font-size: 15px;
+      display: none;
+    }
+  }
+  &.sm {
+    .cast-member-card-image {
+      img {
+        width: 80px;
+        height: 120px;
+        border-radius: 5px;
+      }
+    }
+  }
+}

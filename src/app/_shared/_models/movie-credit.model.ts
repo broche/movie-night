@@ -5,6 +5,7 @@ export interface IMovieCreditResponse {
 }
 
 export interface IMovieCredit {
+  id: number;
   known_for_department: string;
   name: string;
   profile_path: number;
@@ -16,6 +17,7 @@ export interface IMovieCredit {
 
 export class MovieCredit {
   id: string;
+  personId: number;
   knownForDepartment: string;
   name: string;
   image: string;
@@ -31,5 +33,6 @@ export class MovieCredit {
     this.job = movieCredit.job;    
     this.id = movieCredit.credit_id;
     this.popularity = movieCredit.popularity;
+    this.personId = movieCredit.id;
   }
 }
