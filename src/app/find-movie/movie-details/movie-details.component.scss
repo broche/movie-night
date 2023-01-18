@@ -17,7 +17,11 @@
       box-shadow: 0 2px 4px -1px #0003, 0 4px 5px #00000024, 0 1px 10px #0000001f;
       .overview {
         font-size: 16px;
-        line-height: 30px;;
+        line-height: 30px;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
       }
 
       .inner {
