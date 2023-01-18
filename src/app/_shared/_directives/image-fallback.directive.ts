@@ -5,7 +5,8 @@ import {Directive, Input, HostBinding} from '@angular/core'
       '(error)':'updateUrl()',
       '(load)': 'load()',
       '[src]':'src'
-     }
+     },
+     standalone: true
   })
   
  export class ImageFallbackDirective {

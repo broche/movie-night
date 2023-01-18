@@ -2,7 +2,7 @@
 <ng-container *ngIf="watchProviders?.length ?? 0 > 0; else noProviders">
   <div class="watch-provider d-flex flex-wrap align-items-center">
     <ng-container *ngFor="let watchProvider of watchProviders">
-      <img class="streaming-icon" [src]="watchProvider.logo" [matTooltip]="watchProvider.name" />
+      <img class="streaming-icon" [src]="watchProvider.logo" [matTooltip]="watchProvider.name" [class.has-provider]="hasProvider(watchProvider)" />
     </ng-container>
   </div>
 </ng-container>

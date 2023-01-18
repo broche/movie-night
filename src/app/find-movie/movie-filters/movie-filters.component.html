@@ -6,39 +6,50 @@
       <mat-option *ngFor="let option of sortByOptions" [value]="option.value">{{option.label}}</mat-option>
     </mat-select>
   </mat-form-field>
-  
-
   <mat-divider></mat-divider>
-  <ng-container *ngIf="genresLoaded$ | async">
+  
+  <ng-container *ngIf="watchProviderMap$ | async as watchProviderMap">
+    <mat-form-field appearance="outline">
+      <mat-label>Services</mat-label>
+      <mat-select [multiple]="true" formControlName="watchProviders">
+        <mat-select-trigger>
+          {{selectedWatchProviderIds.length > 0 && watchProviderMap[selectedWatchProviderIds[0]]?.name}}
+          <span *ngIf="(selectedWatchProviderIds.length || 0) > 1">
+            (+{{(selectedWatchProviderIds.length || 0) - 1}} {{selectedWatchProviderIds.length === 2 ? 'other' : 'others'}})
+          </span>
+        </mat-select-trigger>
+        <mat-option *ngFor="let watchProvider of watchProviders$ | async" [value]="watchProvider.id">{{watchProvider.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+  </ng-container>
 
-    <ng-container *ngIf="genreMap$ | async as genreMap">
-    
-      <mat-form-field appearance="outline">
-        <mat-label>Genres</mat-label>
-        <mat-select [multiple]="true" formControlName="genres">
-          <mat-select-trigger>
-            {{selectedGenreIds.length > 0 && genreMap[selectedGenreIds[0]]?.name}}
-            <span *ngIf="(selectedGenreIds.length || 0) > 1">
-              (+{{(selectedGenreIds.length || 0) - 1}} {{selectedGenreIds.length === 2 ? 'other' : 'others'}})
-            </span>
-          </mat-select-trigger>
-          <mat-option *ngFor="let genre of genres$ | async" [value]="genre.id">{{genre.name}}</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-divider></mat-divider>
-      <mat-form-field appearance="outline">
-        <mat-label>Excluded Genres</mat-label>
-        <mat-select [multiple]="true" formControlName="excludedGenres">
-          <mat-select-trigger>
-            {{excludedGenreIds.length > 0 && genreMap[excludedGenreIds[0]]?.name}}
-            <span *ngIf="(excludedGenreIds?.length || 0) > 1">
-              (+{{(excludedGenreIds.length || 0) - 1}} {{excludedGenreIds.length === 2 ? 'other' : 'others'}})
-            </span>
-          </mat-select-trigger>
-          <mat-option *ngFor="let genre of genres$ | async" [value]="genre.id">{{genre.name}}</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </ng-container>
+  <ng-container *ngIf="genreMap$ | async as genreMap">
+    <mat-form-field appearance="outline">
+      <mat-label>Genres</mat-label>
+      <mat-select [multiple]="true" formControlName="genres">
+        <mat-select-trigger>
+          {{selectedGenreIds.length > 0 && genreMap[selectedGenreIds[0]]?.name}}
+          <span *ngIf="(selectedGenreIds.length || 0) > 1">
+            (+{{(selectedGenreIds.length || 0) - 1}} {{selectedGenreIds.length === 2 ? 'other' : 'others'}})
+          </span>
+        </mat-select-trigger>
+        <mat-option *ngFor="let genre of genres$ | async" [value]="genre.id">{{genre.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <mat-form-field appearance="outline">
+      <mat-label>Excluded Genres</mat-label>
+      <mat-select [multiple]="true" formControlName="excludedGenres">
+        <mat-select-trigger>
+          {{excludedGenreIds.length > 0 && genreMap[excludedGenreIds[0]]?.name}}
+          <span *ngIf="(excludedGenreIds?.length || 0) > 1">
+            (+{{(excludedGenreIds.length || 0) - 1}} {{excludedGenreIds.length === 2 ? 'other' : 'others'}})
+          </span>
+        </mat-select-trigger>
+        <mat-option *ngFor="let genre of genres$ | async" [value]="genre.id">{{genre.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
   </ng-container>
   <mat-divider></mat-divider>
   <div class="d-flex flex-column pad">
@@ -123,6 +134,7 @@
   <mat-divider></mat-divider>
   <div class="pad d-flex align-items-center justify-content-center">
     <button mat-raised-button color="primary" type="submit" class="mx-2">Submit</button>
+    <button mat-flat-button type="button" (click)="resetDefaultFilters()">Reset</button>
     <button mat-flat-button type="button" (click)="clearFilters()">Clear</button>
   </div>
   

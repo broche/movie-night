@@ -8,11 +8,9 @@ export interface IWatchProviderResponse {
     }
   }
 }
-// export interface IWatchProvider {
-//   link: string;
-//   buy: Array<
-// }
+
 export interface IWatchProvider {
+  display_priorities: { [key: string]: number };
   display_priority: number;
   logo_path: string;
   provider_id: number;
@@ -29,6 +27,8 @@ export class WatchProvider {
     this.id = watchProvider.provider_id;
     this.name = watchProvider.provider_name;    
     this.logo = `https://image.tmdb.org/t/p/original${watchProvider.logo_path}`;
-    this.priority = watchProvider.display_priority;
+    this.priority = watchProvider.display_priorities
+      ? watchProvider.display_priorities['US'] ?? watchProvider.display_priority
+      : watchProvider.display_priority;
   }
 }

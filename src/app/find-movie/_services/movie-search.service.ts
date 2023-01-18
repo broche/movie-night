@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, finalize, forkJoin, map, Observable, tap, zip } from 'rxjs';
-import { Genre, IMovie, IFindMovieFilters, Movie, TMDBDiscoverRequest } from '../../_shared/_models';
-import { MatSidenav } from '@angular/material/sidenav';
-import { TMDBResult } from 'src/app/_shared/_models/tmdb-result.model';
-import { GenreService } from 'src/app/_shared/_services';
+import { BehaviorSubject, finalize, map, Observable, tap, zip } from 'rxjs';
+import { IMovie, IFindMovieFilters, Movie, TMDBDiscoverRequest } from '../../_shared/_models';
+import { TMDBResult } from '../../_shared/_models/tmdb-result.model';
+import { GenreService } from '../../_shared/_services';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +16,8 @@ export class MovieSearchService {
   private readonly _totalPages: BehaviorSubject<number> = new BehaviorSubject<number>(1);
   public readonly totalResults$: Observable<number | undefined>;
   private readonly _totalResults: BehaviorSubject<number | undefined> = new BehaviorSubject<number | undefined>(undefined);
-  private _params: IFindMovieFilters | undefined;
+  private _params: BehaviorSubject<IFindMovieFilters | undefined> = new BehaviorSubject<IFindMovieFilters | undefined>(undefined);
+  public readonly filters$: Observable<IFindMovieFilters | undefined>;
 
   public readonly movieResults$: Observable<Array<Movie>>;
   private readonly _movieResults: BehaviorSubject<Array<Movie>> = new BehaviorSubject<Array<Movie>>([]);;
@@ -34,6 +34,7 @@ export class MovieSearchService {
     this.totalResults$ = this._totalResults.asObservable();
     this.movieResults$ = this._movieResults.asObservable();
     this.isLoading$ = this._isLoading.asObservable();
+    this.filters$ = this._params.asObservable();
 
     this.canLoadMore$ = zip(
       this._currentPage,
@@ -56,15 +57,15 @@ export class MovieSearchService {
   }
 
   public loadMore(): void {
-    if (this._params && this._currentPage.value < this._totalPages.value) {
-      this.loadMovies(this._params, { concat: true });
+    if (this._params.value && this._currentPage.value < this._totalPages.value) {
+      this.loadMovies(this._params.value, { concat: true });
     }
   }
 
   private loadMovies(params: IFindMovieFilters, options?: { concat?: boolean, additionalLoads?: number }) {
-    this._params = params;
+    this._params.next(params);
     this._isLoading.next(true);
-    this._search(this._params!, this._currentPage.value + 1)
+    this._search(this._params.value!, this._currentPage.value + 1)
       .pipe(
         tap(a => {
           this._currentPage.next(a.page);
@@ -109,7 +110,9 @@ export class MovieSearchService {
       without_genres: !!params.excludedGenres ? params.excludedGenres?.join(',') : [],
       'with_runtime.gte': params.runtimeMin,
       'with_runtime.lte': params.runtimeMax,
-      'vote_count.gte': params.minimumVoteCount
+      'vote_count.gte': params.minimumVoteCount,
+      with_watch_providers: !!params.watchProviders ? params.watchProviders?.join('|') : [],
+      watch_region: 'US'
     }
     const parameterizedObj = Object.keys(request).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(request[k])}`).join('&');
     console.log('param obj: ', parameterizedObj);

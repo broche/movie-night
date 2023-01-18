@@ -2,7 +2,8 @@ import { AfterViewInit, Directive, ElementRef, EventEmitter, Input, OnDestroy, O
 import { Subject, delay, filter } from 'rxjs';
 
 @Directive({
-  selector: '[appObserveVisibility]'
+  selector: '[appObserveVisibility]',
+  standalone: true
 })
 export class ObserveVisibilityDirective implements OnDestroy, OnInit, AfterViewInit {
   @Input() options = {};

@@ -40,8 +40,6 @@ import { ImageFallbackDirective } from '../_shared/_directives/image-fallback.di
     MovieFiltersComponent,
     MovieListComponent,
     FindMovieComponent,
-    ObserveVisibilityDirective,
-    ImageFallbackDirective,
     MovieCardComponent,
     MovieListItemComponent,
     MovieDetailsComponent,
@@ -68,7 +66,10 @@ import { ImageFallbackDirective } from '../_shared/_directives/image-fallback.di
     MatSelectModule,
     MatSidenavModule,
     MatSliderModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    
+    ObserveVisibilityDirective,
+    ImageFallbackDirective,
   ],
   providers: []
 })

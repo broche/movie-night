@@ -114,9 +114,10 @@ export class MovieDetailsService {
       });
     }
   }
-  public closeSidenav(): void {
+  public close(): void {
     if (this._detailsSidenav.value) {
       this._detailsSidenav.value.close();
+      this._clearData();
     }
   }
 

@@ -2,9 +2,9 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BehaviorSubject, distinctUntilChanged, map, Observable, Subject, takeUntil, tap, zip } from 'rxjs';
+import { BreakpointObserver, MediaMatcher } from '@angular/cdk/layout';
 import { MovieDetailsService } from './_services/movie-details.service';
 import { PersonDetailsService } from './_services/person-details.service';
-import { BreakpointObserver, MediaMatcher } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-find-movie',
@@ -29,20 +29,22 @@ export class FindMovieComponent implements OnInit {
   public ngOnInit(): void {
     this.movieDetailsService.setSidenav(this.details!);
     this.personDetailsService.setSidenav(this.details!);
-    this.router.events.subscribe(res => {
-      if (res instanceof NavigationEnd && res.url === '/find-a-movie') {
-        this.movieDetailsService.closeSidenav();
-      }
-    });
+    this.router.events
+      .pipe(takeUntil(this._unsubscribe$))
+      .subscribe(res => {
+        if (res instanceof NavigationEnd && res.url === '/find-a-movie') {
+          this.movieDetailsService.close();
+        }
+      });
     
-    this.breakpointObserver.observe(['(max-width: 1050px)', '(max-width: 1900px)'])
+    this.breakpointObserver.observe(['(max-width: 1550px)', '(max-width: 1900px)'])
       .pipe(
         takeUntil(this._unsubscribe$),
         distinctUntilChanged()
       )
       .subscribe(res => {
         if (this.filters && this.details) {
-          if (this.breakpointObserver.isMatched('(max-width: 1050px)')) {
+          if (this.breakpointObserver.isMatched('(max-width: 1550px)')) {
             console.log('1');
             this.filters!.mode = 'over';
             this.filters?.close();

@@ -3,6 +3,7 @@ import { Genre } from "../../_shared/_models/genre.model";
 export interface IFindMovieFilters {
     genres: Array<number>,
     excludedGenres: Array<number>,
+    watchProviders: Array<number>,
     yearMin: number,
     yearMax: number,
     ratingMin: number,
@@ -27,4 +28,6 @@ export interface TMDBDiscoverRequest {
     'with_runtime.gte': number;
     'with_runtime.lte': number;
     'vote_count.gte': number;
+    with_watch_providers: string;
+    watch_region: string;
 }
