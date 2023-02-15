@@ -37,26 +37,27 @@ export class FindMovieComponent implements OnInit {
         }
       });
     
-    this.breakpointObserver.observe(['(max-width: 1550px)', '(max-width: 1900px)'])
+    this.breakpointObserver.observe(['(max-width: 1600px)', '(max-width: 1900px)'])
       .pipe(
         takeUntil(this._unsubscribe$),
         distinctUntilChanged()
       )
       .subscribe(res => {
         if (this.filters && this.details) {
-          if (this.breakpointObserver.isMatched('(max-width: 1550px)')) {
+          if (this.breakpointObserver.isMatched('(max-width: 1600px)')) {
             console.log('1');
-            this.filters!.mode = 'over';
-            this.filters?.close();
+            this.details!.mode = 'over';
           } else if (this.breakpointObserver.isMatched('(max-width: 1900px)')) {
             console.log('2');
-            this.filters!.mode = 'side';
-            this.filters?.open();
-            this.details!.mode = 'over';
+            this.details!.mode = 'side';
+            this.filters?.close();
+            this.filters!.mode = 'over';
           } else {
             console.log('3');
   
             this.details!.mode = 'side';
+            this.filters?.open();
+            this.filters!.mode = 'side';
             // this.details?.open();
           }
         }
