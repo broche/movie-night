@@ -1,7 +1,11 @@
 :host {
   display: block;
   height: 100%;
-  width: 760px;
+  width: 90vw;
+
+  @media (min-width: 845px) { 
+    width: 760px;
+  }
   
   mat-divider {
     margin-top: 1rem;
