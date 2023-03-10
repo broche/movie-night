@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { MatSidenav } from '@angular/material/sidenav';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatDrawerMode, MatSidenav } from '@angular/material/sidenav';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BehaviorSubject, distinctUntilChanged, map, Observable, Subject, takeUntil, tap, zip } from 'rxjs';
 import { BreakpointObserver, MediaMatcher } from '@angular/cdk/layout';
@@ -11,9 +11,11 @@ import { PersonDetailsService } from './_services/person-details.service';
   templateUrl: './find-movie.component.html',
   styleUrls: ['./find-movie.component.scss']
 })
-export class FindMovieComponent implements OnInit {
+export class FindMovieComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('details', { static: true }) details?: MatSidenav;
   @ViewChild('filters', { static: true }) filters?: MatSidenav;
+  public detailsMode: MatDrawerMode = 'side';
+  public filtersMode: MatDrawerMode = 'side';
   public isWatching$: Observable<boolean>;
   private readonly _unsubscribe$: Subject<void> = new Subject<void>();
 
@@ -21,7 +23,8 @@ export class FindMovieComponent implements OnInit {
     private readonly router: Router,
     private readonly movieDetailsService: MovieDetailsService,
     private readonly personDetailsService: PersonDetailsService,
-    private readonly breakpointObserver: BreakpointObserver
+    private readonly breakpointObserver: BreakpointObserver,
+    private readonly cdr: ChangeDetectorRef
   ) {
     this.isWatching$ = movieDetailsService.isWatching$;
   }
@@ -43,25 +46,28 @@ export class FindMovieComponent implements OnInit {
         distinctUntilChanged()
       )
       .subscribe(res => {
-        if (this.filters && this.details) {
-          if (this.breakpointObserver.isMatched('(max-width: 1600px)')) {
-            console.log('1');
-            this.details!.mode = 'over';
-          } else if (this.breakpointObserver.isMatched('(max-width: 1900px)')) {
-            console.log('2');
-            this.details!.mode = 'side';
-            this.filters?.close();
-            this.filters!.mode = 'over';
-          } else {
-            console.log('3');
-  
-            this.details!.mode = 'side';
-            this.filters?.open();
-            this.filters!.mode = 'side';
-            // this.details?.open();
-          }
+        if (this.breakpointObserver.isMatched('(max-width: 1600px)')) {
+          console.log('1');
+          this.detailsMode = 'over';
+          this.filtersMode = 'over';
+        } else if (this.breakpointObserver.isMatched('(max-width: 1900px)')) {
+          console.log('2');
+          this.detailsMode = 'side';
+          this.filtersMode = 'over';
+          this.filters?.close();
+        } else {
+          console.log('3');
+          this.detailsMode = 'side';
+          this.filtersMode = 'side';
+          this.filters?.open();
         }
+        this._updateModes();
       });
+  }
+
+  public ngAfterViewInit(): void {
+    this._updateModes();
+    this.cdr.detectChanges();
   }
 
   public ngOnDestroy(): void {
@@ -71,5 +77,12 @@ export class FindMovieComponent implements OnInit {
 
   public destroySidenav(): void {
     this.router.navigate(['/find-a-movie', { outlets: { details: null }}]);
+  }
+
+  private _updateModes(): void {
+    if (this.filters && this.details) {
+      this.details!.mode = this.detailsMode;
+      this.filters!.mode = this.filtersMode;
+    }
   }
 }

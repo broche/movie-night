@@ -1,4 +1,4 @@
-<div class="movie-results d-flex flex-wrap justify-content-center" [class.has-selection]="selectedMovie$ | async">
+<div class="movie-results d-flex flex-wrap justify-content-center mt-5" [class.has-selection]="selectedMovie$ | async">
   <ng-container *ngFor="let movie of movieResults$ | async">
     <a [routerLink]="[{ outlets: { details: ['movie', movie.id] } }]"
        [class.selected]="movie.id === (selectedMovie$ | async)?.id">

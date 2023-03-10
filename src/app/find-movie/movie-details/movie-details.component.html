@@ -62,7 +62,7 @@
 
       <mat-divider></mat-divider>
       <p>Top Billed Cast</p>
-      <div class="d-flex align-items-center">
+      <div class="d-flex align-items-center flex-wrap">
         <ng-container *ngFor="let credit of castMembers$ | async">
           <a [routerLink]="['/find-a-movie', { outlets: { details: ['person', credit.personId] } }]">
             <app-cast-member-card [credit]="credit" size="sm"></app-cast-member-card>

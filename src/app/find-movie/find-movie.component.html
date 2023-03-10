@@ -2,9 +2,8 @@
 
   <!-- Filters Pane (Left) -->
   <mat-sidenav 
-    #filters 
-    opened 
-    mode="side" 
+    #filters
+    [mode]="filtersMode" 
     [fixedInViewport]="true">
     <app-movie-filters></app-movie-filters>
   </mat-sidenav>
@@ -12,7 +11,7 @@
   <!-- Details Pane (Right) -->
   <mat-sidenav 
     #details
-    mode="side" 
+    [mode]="detailsMode" 
     position="end" 
     [fixedInViewport]="true" 
     (closedStart)="destroySidenav()">
@@ -20,7 +19,7 @@
   </mat-sidenav>
 
   <!-- Main Content (middle) -->
-  <div class="main" [class.watching]="isWatching$ | async">
+  <div class="main p-sm-0 p-md-3" [class.watching]="isWatching$ | async">
     <ng-container *ngIf="details.opened">
       <div class="toggle-wrapper right">
         <div class="toggle" (click)="details.toggle()">
