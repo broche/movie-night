@@ -1,11 +1,21 @@
 <ng-container *ngIf="person$ | async as person">
-  <div class="movie-details">
+  <div class="person-details">
     <div class="additional">
-      <h1 class="m-0">{{person.name}}</h1>
-      <p>Born {{person.birthday | date: 'MM/dd/yyyy' }} in {{person.birthplace}}</p>
+      <div class="info">
+        <h1 class="m-0">{{person.name}}</h1>
+        <p>Born {{person.birthday | date: 'MM/dd/yyyy' }} in {{person.birthplace}}</p>
+      </div>
+      <div class="image-wrap">
+        <div class="d-flex align-items-center flex-wrap">
+          <ng-container *ngFor="let image of (images$ | async)">
+            <img class="person-image" [src]="image.path" />
+          </ng-container>
+        </div>
+      </div>
       <mat-divider></mat-divider>
+      
       <p>Featured in...</p>
-      <div class="d-flex align-items-center flex-wrap">
+      <div class="d-flex align-items-center justify-content-center flex-wrap">
         <ng-container *ngFor="let movie of movieCredits$ | async">
           <a [routerLink]="['/find-a-movie', { outlets: { details: ['movie', movie.id] } }]">
             <app-movie-card [movie]="movie" size="sm"></app-movie-card>
@@ -13,13 +23,6 @@
         </ng-container>
       </div>
       <mat-divider></mat-divider>
-      <!-- <p>Images</p>
-      <div class="d-flex align-items-center flex-wrap">
-        <ng-container *ngFor="let image of (posterImages$ | async) | slice:0:10">
-          <img class="poster-image" [src]="image.path" />
-        </ng-container>
-      </div>
-      <mat-divider></mat-divider> -->
       
       <!-- <div class="extra">
         <ng-container *ngIf="director$ | async as director">

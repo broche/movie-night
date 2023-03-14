@@ -172,7 +172,7 @@ export class MovieDetailsService {
   private _loadSimilarMovies(id: string): void {
     this.http.get<TMDBResult<IMovie>>(`https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=${MovieDetailsService.API_KEY}&language=en-US`)
       .pipe(
-        map(a => a.results.splice(0, 10))
+        map(a => a.results.splice(0, 15))
       ).subscribe(res => {
         this._similarMovies.next(res.map(a => new Movie(a, this.genreService.genres)));
       });

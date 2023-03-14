@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, filter, map, Observable, take } from 'rxjs';
+import { BehaviorSubject, delay, filter, map, Observable, switchMap, take } from 'rxjs';
 import { IMovie, Movie } from '../../_shared/_models';
 import { MatSidenav } from '@angular/material/sidenav';
 import { IWatchProviderResponse, WatchProvider } from 'src/app/_shared/_models/watch-provider.model';
@@ -8,6 +8,7 @@ import { TMDBResult } from 'src/app/_shared/_models/tmdb-result.model';
 import { GenreService } from 'src/app/_shared/_services';
 import { IMovieCreditResponse, MovieCredit } from 'src/app/_shared/_models/movie-credit.model';
 import { IPerson, Person } from 'src/app/_shared/_models/person.model';
+import { IImage, Image } from 'src/app/_shared/_models/image.model';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,9 @@ export class PersonDetailsService {
   public readonly movieCredits$: Observable<Array<Movie> | undefined>;
   private readonly _movieCredits: BehaviorSubject<Array<Movie> | undefined> = new BehaviorSubject<Array<Movie> | undefined>(undefined);
 
+  public readonly images$: Observable<Array<Image> | undefined>;
+  private readonly _images: BehaviorSubject<Array<Image> | undefined> = new BehaviorSubject<Array<Image> | undefined>(undefined);
+
   public readonly isLoading$: Observable<boolean>;
   private readonly _isLoading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
@@ -34,6 +38,7 @@ export class PersonDetailsService {
   ) {
     this.person$ = this._person.asObservable();
     this.movieCredits$ = this._movieCredits.asObservable();
+    this.images$ = this._images.asObservable();
     this.detailsSidenav$ = this._detailsSidenav.asObservable();
     this.isLoading$ = this._isLoading.asObservable();
   }
@@ -67,12 +72,14 @@ export class PersonDetailsService {
       .subscribe(movie => {
         this._person.next(movie);
         this._loadMovieCredits(id);
+        this._loadImages(id);
       })
   }
 
   private _clearData(): void {
     this._person.next(undefined);
     this._movieCredits.next(undefined);
+    this._images.next(undefined);
   }
 
   private _getPersonDetails(id: string): Observable<Person> {
@@ -90,6 +97,24 @@ export class PersonDetailsService {
         // map(a => a.splice(0, 15))
       ).subscribe(res => {
         this._movieCredits.next(res.map(a => new Movie(a, this.genreService.genres)));
+      });
+  }
+  private _loadImages(id: string): void {
+    this.http.get<{
+      profiles: Array<IImage>
+    }>(`https://api.themoviedb.org/3/person/${id}/images?api_key=${PersonDetailsService.API_KEY}&language=en-US`)
+      .pipe(
+        map(a => a.profiles)
+        // map(a => a.splice(0, 15))
+      ).subscribe(res => {
+        if (res.length > 3) {
+          while (res.length < 12) {
+            res.push(...res);
+          }
+          this._images.next(res.map(a => new Image(a)));
+        } else {
+          this._images.next(undefined);
+        }
       });
   }
 }

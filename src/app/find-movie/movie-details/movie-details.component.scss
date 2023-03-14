@@ -13,7 +13,6 @@
     margin-bottom: 1rem;
   }
   .movie-details {
-    overflow-x: hidden;
     .content {
       width: 100%;
       display:block;
@@ -24,9 +23,13 @@
       .overview {
         font-size: 14px;
         line-height: 20px;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
         @media (min-width: 845px) { 
           font-size: 16px;
           line-height: 30px;
+          margin-top: 2rem;
+          margin-bottom: 2rem;
         }
         display: -webkit-box;
         -webkit-line-clamp: 3;
@@ -36,8 +39,22 @@
 
       .inner {
         position: relative;
-        min-height: 400px;
+        &.isWatching {
+          min-height: 310px;
+        }
+        @media (min-width: 845px) { 
+          min-height: 400px;
+          &.isWatching {
+            min-height: 400px;
+          }
+        }
         padding: 1.5rem;
+      }
+    }
+    .title-wrap {
+      margin-bottom: 1rem;
+      @media (min-width: 845px) { 
+        margin-bottom: 2rem;
       }
     }
     .movie-title {
@@ -80,7 +97,13 @@
     .additional-wrap {
       padding-top: 0rem;
     }
-    
+    .genre-chips {
+      height: 40px;
+      overflow: hidden;
+    }
+    .runtime {
+      min-width: 85px;
+    }
     .additional {
       padding: 1.5rem;
       // padding-top: 0;
@@ -95,13 +118,30 @@
     }
     app-movie-card {
       margin-right: 0.5rem;
-      margin-bottom: 0.5rem;
+      
+      @media (min-width: 845px) { 
+        margin-bottom: 0.5rem;
+      }
     }
     app-cast-member-card {
       margin-right: 0.5rem;
     }
     app-movie-rating-pill {
       margin-left: 0.5rem;
+    }
+    .similar-wrap {
+      flex-wrap: nowrap;
+      @media (min-width: 845px) { 
+        flex-wrap: wrap;
+      }
+    }
+    .scroll-x {
+      width: 100%;
+      overflow-x: scroll;
+      @media (min-width: 845px) { 
+        width: auto;
+        overflow: auto;
+      }
     }
   }
 }
