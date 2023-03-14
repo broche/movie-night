@@ -5,13 +5,13 @@
         <h1 class="m-0">{{person.name}}</h1>
         <p>Born {{person.birthday | date: 'MM/dd/yyyy' }} in {{person.birthplace}}</p>
       </div>
-      <div class="image-wrap">
+      <!-- <div class="image-wrap">
         <div class="d-flex align-items-center flex-wrap">
           <ng-container *ngFor="let image of (images$ | async)">
             <img class="person-image" [src]="image.path" />
           </ng-container>
         </div>
-      </div>
+      </div> -->
       <mat-divider></mat-divider>
       
       <p>Featured in...</p>

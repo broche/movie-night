@@ -58,7 +58,7 @@
       }
     }
     .movie-title {
-      font-size: 16px;
+      font-size: 20px;
       @media (min-width: 845px) { 
         font-size: 24px;
       }
@@ -137,7 +137,8 @@
     }
     .scroll-x {
       width: 100%;
-      overflow-x: scroll;
+      max-width: 100%;
+      overflow: auto;
       @media (min-width: 845px) { 
         width: auto;
         overflow: auto;
