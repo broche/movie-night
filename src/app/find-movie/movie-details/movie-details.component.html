@@ -4,7 +4,7 @@
       <div class="inner d-flex flex-column justify-content-between">
         <ng-container *ngIf="!(isWatching$ | async)">
           <div class="d-flex align-items-center justify-content-between mb-5">
-            <h1 class="m-0">{{movie.title}} ({{movie.releaseDate | date: 'y'}})</h1>
+            <h1 class="movie-title m-0">{{movie.title}} ({{movie.releaseDate | date: 'y'}})</h1>
             <app-movie-rating-pill [rating]="movie.voteAverage" size="lg"></app-movie-rating-pill>
           </div>
           <ng-container *ngIf="trailerId$ | async as trailerId">
@@ -62,7 +62,7 @@
 
       <mat-divider></mat-divider>
       <p>Top Billed Cast</p>
-      <div class="d-flex align-items-center flex-wrap">
+      <div class="d-flex align-items-center credits">
         <ng-container *ngFor="let credit of castMembers$ | async">
           <a [routerLink]="['/find-a-movie', { outlets: { details: ['person', credit.personId] } }]">
             <app-cast-member-card [credit]="credit" size="sm"></app-cast-member-card>
@@ -71,7 +71,7 @@
       </div>
       <mat-divider></mat-divider>
       <p>You might also like...</p>
-      <div class="d-flex align-items-center flex-wrap">
+      <div class="d-flex align-items-center">
         <ng-container *ngFor="let movie of similarMovies$ | async">
           <a [routerLink]="['/find-a-movie', { outlets: { details: ['movie', movie.id] } }]">
             <app-movie-card [movie]="movie" size="sm"></app-movie-card>

@@ -13,6 +13,7 @@
     margin-bottom: 1rem;
   }
   .movie-details {
+    overflow-x: hidden;
     .content {
       width: 100%;
       display:block;
@@ -21,8 +22,12 @@
 
       box-shadow: 0 2px 4px -1px #0003, 0 4px 5px #00000024, 0 1px 10px #0000001f;
       .overview {
-        font-size: 16px;
-        line-height: 30px;
+        font-size: 14px;
+        line-height: 20px;
+        @media (min-width: 845px) { 
+          font-size: 16px;
+          line-height: 30px;
+        }
         display: -webkit-box;
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
@@ -33,6 +38,12 @@
         position: relative;
         min-height: 400px;
         padding: 1.5rem;
+      }
+    }
+    .movie-title {
+      font-size: 16px;
+      @media (min-width: 845px) { 
+        font-size: 24px;
       }
     }
     .image-backdrop {
@@ -68,11 +79,6 @@
     
     .additional-wrap {
       padding-top: 0rem;
-      // ::ng-deep {
-      //   .mat-mdc-tab-body-wrapper {
-      //     padding: 1rem 1.4rem 0 1.4rem;
-      //   }
-      // }
     }
     
     .additional {

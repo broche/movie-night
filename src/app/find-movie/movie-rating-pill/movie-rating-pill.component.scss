@@ -3,19 +3,34 @@
 }
 .rating {
   text-align: center;
-  width: 32px;
-  height: 32px;
   color: white;
-  border-radius: 17px;
-  line-height: 32px;
   font-weight: 600;
+  width: 28px;
+  height: 28px;
+  border-radius: 28px;
+  line-height: 28px;
+  font-size: 12px;
+  @media (min-width: 845px) { 
+    width: 32px;
+    height: 32px;
+    border-radius: 32px;
+    line-height: 32px;
+  }
 
   &.lg {
-    height: 56px;
-    width: 56px;
-    border-radius: 56px;
-    line-height: 56px;
-    font-size: 20px;
+    height: 36px;
+    width: 36px;
+    border-radius: 36px;
+    line-height: 36px;
+    font-size: 15px;
+
+    @media (min-width: 845px) { 
+      height: 56px;
+      width: 56px;
+      border-radius: 56px;
+      line-height: 56px;
+      font-size: 20px;
+    }
   }
 
   &.score-10,
