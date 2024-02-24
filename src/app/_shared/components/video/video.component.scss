@@ -1,11 +1,10 @@
 :host {
   display: block;
+  background-color: black;
 }
-::ng-deep {
-  youtube-player {
-    display: block;
-    height: 100%;
-    width: 100%;
+youtube-player {
+  display: block;
+  ::ng-deep {
     > div {
       width: 100%;
       height: 100%;
@@ -13,9 +12,14 @@
     youtube-player-placeholder {
       height: 100%!important;
       width: 100%!important;
+    }    
+    iframe {
+      width: 100%;
+      height: 100%;
     }
   }
 }
+
 .cast-member-card {
   position: relative;
   .cast-member-card-image {

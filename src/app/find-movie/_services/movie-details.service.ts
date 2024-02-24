@@ -58,6 +58,12 @@ export class MovieDetailsService {
   public detailsSidenav$: Observable<MatSidenav | undefined>;
   private _detailsSidenav: BehaviorSubject<MatSidenav | undefined> = new BehaviorSubject<MatSidenav | undefined>(undefined);
 
+  public videoPlayerTimestamp$: Observable<number | undefined>;
+  private _videoPlayerTimestamp: BehaviorSubject<number | undefined> = new BehaviorSubject<number | undefined>(0);
+  public get videoPlayerTimeStamp(): number | undefined {
+    return this._videoPlayerTimestamp.value;
+  }
+
   constructor(
     private readonly http: HttpClient,
     private readonly genreService: GenreService
@@ -73,6 +79,7 @@ export class MovieDetailsService {
     this.backdropImages$ = this._backdropImages.asObservable();
     this.posterImages$ = this._posterImages.asObservable();
     this.isWatching$ = this._isWatching.asObservable();
+    this.videoPlayerTimestamp$ = this._videoPlayerTimestamp.asObservable();
     this.detailsSidenav$ = this._detailsSidenav.asObservable();
     this.isLoading$ = this._isLoading.asObservable();
 
@@ -94,6 +101,10 @@ export class MovieDetailsService {
 
   public stopWatching(): void {
     this._isWatching.next(false);
+  }
+
+  public setCurrentTime(time: number | undefined) {
+    this._videoPlayerTimestamp.next(time);
   }
 
   public setSidenav(sidenav: MatSidenav): void {
@@ -151,6 +162,7 @@ export class MovieDetailsService {
     this._backdropImages.next(undefined);
     this._posterImages.next(undefined);
     this._videos.next(undefined);
+    this._videoPlayerTimestamp.next(0);
   }
 
   private _getMovieDetails(id: string): Observable<Movie> {
@@ -172,7 +184,8 @@ export class MovieDetailsService {
   private _loadSimilarMovies(id: string): void {
     this.http.get<TMDBResult<IMovie>>(`https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=${MovieDetailsService.API_KEY}&language=en-US`)
       .pipe(
-        map(a => a.results.splice(0, 15))
+        map(a => a.results/*.splice(0, 15)*/),
+        map(a => a.sort((b, c) => c.vote_average - b.vote_average))
       ).subscribe(res => {
         this._similarMovies.next(res.map(a => new Movie(a, this.genreService.genres)));
       });

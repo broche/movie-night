@@ -11,7 +11,7 @@
         </div>
       }
     </div>
-    <div class="content" >
+    <div class="content" appAspectRatio>
       <div class="inner d-flex flex-column justify-content-between" [class.isWatching]="isWatching$ | async">
         @if (!(isWatching$ | async)) {
           <div class="d-flex align-items-center justify-content-between title-wrap">
@@ -41,7 +41,7 @@
         }
         @if (isWatching$ | async) {
           @if (trailerId$ | async; as trailerId) {
-            <app-video [videoId]="trailerId" [autoplay]="true"></app-video>
+            <app-video [videoId]="trailerId" [autoplay]="true" [width]="'100%'"></app-video>
           } @else {
             <div class="text-center m-5">
               No trailer available...
@@ -51,7 +51,9 @@
             <mat-icon>close</mat-icon>
           </button>
         } @else {
-          <div class="image-backdrop" [style.background-image]="'url(' + movie.backdrop + ')'"></div>
+          <div class="image-backdrop" 
+            [style.background-image]="'url(' + movie.backdrop + ')'"
+          ></div>
         }
       </div>
     </div>

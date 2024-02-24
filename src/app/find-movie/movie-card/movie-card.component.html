@@ -1,12 +1,24 @@
-<div class="movie-card {{ size }}">
+<div class="movie-card {{ size }}" 
+  (mouseenter)="onMouseEnter(movie)" 
+  (mouseleave)="onMouseLeave(movie)"
+  >
+
   <div class="movie-card-overlay d-flex align-items-start justify-content-end flex-column">
     <p class="title">{{movie.title}}</p>
-    <div>@for (genre of movie.genres | slice: 0:1; track genre) {
-      <span class="genre">{{genre.name}}</span>
-    }</div>
+    <div>
+      @for (genre of movie.genres | slice: 0:1; track genre) {
+        <span class="genre">{{genre.name}}</span>
+      }
+    </div>
   </div>
+
   <div class="movie-card-image">
     <app-movie-rating-pill [rating]="movie.voteAverage"></app-movie-rating-pill>
     <img mat-card-image [src]="movie.poster" default="/assets/images/blank.PNG">
   </div>
+
+  @if (isExpanded) {
+    <app-movie-card-overlay [movie]="movie"></app-movie-card-overlay>
+  }
+
 </div>

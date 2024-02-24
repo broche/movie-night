@@ -4,7 +4,28 @@
 }
 
 app-movie-card {
-  margin: 0.75rem 0.75rem 0.75rem 0.75rem;
+  
+  height: 50%;
+  width: 50%;
+  @media (min-width: 845px) { 
+    height: 100%;
+    width: 100%;
+  }
+  // margin: 0.75rem 0.75rem 0.75rem 0.75rem;
+}
+.movie-results {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Adjust the spacing as needed */
+  justify-content: center; /* Center the items for better visual appearance */
+  a {
+    flex: 1 1 200px; /* Base size of 200px, but allow flexing */
+    transition: transform 0.3s ease;
+    position: relative; /* For positioning the info overlay */
+    &.expanded {
+      flex: 1 1 400px; /* Adjust based on desired expanded size */
+    }
+  }
 }
 
 a.selected {

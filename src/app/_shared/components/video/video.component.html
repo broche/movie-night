@@ -1,1 +1,8 @@
-<youtube-player [videoId]="videoId" [playerVars]="{ autoplay: 1}" disablePlaceholder></youtube-player>
+<youtube-player 
+  [videoId]="videoId"
+  [playerVars]="{ autoplay: 1}" 
+  disablePlaceholder
+  (ready)="onReady($event)"
+  (stateChange)="onStateChange($event)"
+  appAspectRatio
+></youtube-player>

@@ -1,0 +1,47 @@
+<div class="movie-card">
+
+  <div class="video">
+    @if (trailerId$ | async; as trailerId) {
+      <app-video 
+        [videoId]="trailerId" 
+        [autoplay]="true"
+        [width]="'100%'"
+      ></app-video>
+    } @else {
+      <div class="text-center m-5">
+        No trailer available...
+      </div>
+    }
+
+  </div>
+  <div class="details">
+    <div>
+      <!-- <p class="overview">{{movie.overview}}</p> -->
+      <mat-divider></mat-divider>
+      <div class="d-flex align-items-center justify-content-between">
+        <mat-chip-listbox class="genre-chips">
+          @for (genre of movie.genres; track genre) {
+            <mat-chip>
+              {{ genre.name }}
+            </mat-chip>
+          }
+        </mat-chip-listbox>
+        <div class="runtime">{{movie.runtime}} minutes</div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="movie-card-overlay d-flex align-items-start justify-content-end flex-column">
+    <p class="title">{{movie.title}}</p>
+    <div>
+      @for (genre of movie.genres | slice: 0:1; track genre) {
+        <span class="genre">{{genre.name}}</span>
+      }
+    </div>
+  </div>
+
+  <div class="movie-card-image">
+    <app-movie-rating-pill [rating]="movie.voteAverage"></app-movie-rating-pill>
+    <img mat-card-image [src]="movie.poster" default="/assets/images/blank.PNG">
+  </div> -->
+  
+</div>

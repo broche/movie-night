@@ -1,0 +1,26 @@
+:host {
+  position: absolute;
+  top: -5%;
+  left: -50%;
+  width: 200%;
+  height: 110%;
+  transition: all 0.3s ease; // Smooth transition for size
+  background-color: rgba(0, 0, 0, 0.5); // Semi-transparent overlay
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  // Styles to ensure the overlay covers the movie component
+  // and to add more content in the center.
+  .movie-card {
+    width: 100%;
+    background: var(--bs-dark);
+    .video {
+      width: 100%;
+    }
+    .details {
+      width: 100%;
+      padding: 1rem;
+    }
+  }
+}

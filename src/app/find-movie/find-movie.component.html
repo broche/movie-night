@@ -1,31 +1,35 @@
 <mat-sidenav-container autosize>
 
-  <!-- Filters Pane (Left) -->
-  <mat-sidenav
-    #filters
-    [mode]="filtersMode"
-    [fixedInViewport]="true">
-    <app-movie-filters></app-movie-filters>
-  </mat-sidenav>
 
-  <!-- Details Pane (Right) -->
-  <mat-sidenav
-    #details
-    [mode]="detailsMode"
-    position="end"
-    [fixedInViewport]="true"
-    (closedStart)="destroySidenav()">
-    <router-outlet name="details"></router-outlet>
-  </mat-sidenav>
+	<!-- Filters Pane (Left) -->
+	<mat-sidenav #filters
+		[mode]="filtersMode"
+		[fixedInViewport]="true">
+		<app-movie-filters></app-movie-filters>
+	</mat-sidenav>
 
-  <!-- Main Content (middle) -->
-  <div class="main p-sm-0 p-md-3" [class.watching]="isWatching$ | async">
-    <div class="toggle-wrapper left">
-      <div class="toggle" (click)="filters.toggle()">
-        <mat-icon>menu</mat-icon>
-      </div>
-    </div>
-    <router-outlet></router-outlet>
-  </div>
+
+	<!-- Details Pane (Right) -->
+	<mat-sidenav #details
+		[mode]="detailsMode"
+		[fixedInViewport]="true"
+		(closedStart)="destroySidenav()"
+		position="end">
+		<router-outlet name="details"></router-outlet>
+	</mat-sidenav>
+
+
+	<!-- Main Content (middle) -->
+	<div [class.watching]="isWatching$ | async"
+		class="main p-sm-0 p-md-3">
+		<div class="toggle-wrapper left">
+			<div (click)="filters.toggle()"
+				class="toggle">
+				<mat-icon>menu</mat-icon>
+			</div>
+		</div>
+		<router-outlet></router-outlet>
+	</div>
+
 
 </mat-sidenav-container>

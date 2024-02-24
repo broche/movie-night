@@ -17,7 +17,6 @@ bootstrapApplication(AppComponent, {
         { provide: APP_BASE_HREF, useValue: '/movie-night' },
         provideAnimations(),
         provideRouter(routes, withViewTransitions()),
-        
         provideHttpClient(withInterceptorsFromDi())
     ]
 })

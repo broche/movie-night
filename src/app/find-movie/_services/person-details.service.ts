@@ -93,7 +93,8 @@ export class PersonDetailsService {
     }>(`https://api.themoviedb.org/3/person/${id}/movie_credits?api_key=${PersonDetailsService.API_KEY}&language=en-US`)
       .pipe(
         map(a => a.cast),
-        map(a => a.sort((b, c) => c.popularity - b.popularity)),
+        map(a => a.sort((b, c) => c.vote_average - b.vote_average)),
+        map(a => a.filter(a => a.poster_path))
         // map(a => a.splice(0, 15))
       ).subscribe(res => {
         this._movieCredits.next(res.map(a => new Movie(a, this.genreService.genres)));
