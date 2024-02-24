@@ -1,15 +1,20 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MatDrawerMode, MatSidenav } from '@angular/material/sidenav';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { MatDrawerMode, MatSidenav, MatSidenavContainer } from '@angular/material/sidenav';
+import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { BehaviorSubject, distinctUntilChanged, map, Observable, Subject, takeUntil, tap, zip } from 'rxjs';
 import { BreakpointObserver, MediaMatcher } from '@angular/cdk/layout';
 import { MovieDetailsService } from './_services/movie-details.service';
 import { PersonDetailsService } from './_services/person-details.service';
+import { AsyncPipe } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
+import { MovieFiltersComponent } from './movie-filters/movie-filters.component';
 
 @Component({
-  selector: 'app-find-movie',
-  templateUrl: './find-movie.component.html',
-  styleUrls: ['./find-movie.component.scss']
+    selector: 'app-find-movie',
+    templateUrl: './find-movie.component.html',
+    styleUrls: ['./find-movie.component.scss'],
+    standalone: true,
+    imports: [MatSidenavContainer, MatSidenav, MovieFiltersComponent, RouterOutlet, MatIcon, AsyncPipe]
 })
 export class FindMovieComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('details', { static: true }) details?: MatSidenav;

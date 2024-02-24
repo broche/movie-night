@@ -3,11 +3,14 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 import { WatchProvider } from 'src/app/_shared/_models/watch-provider.model';
 import { IFindMovieFilters } from '../_models/find-movie-filters.model';
 import { MovieSearchService } from '../_services/movie-search.service';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
-  selector: 'app-movie-watch-providers',
-  templateUrl: './movie-watch-providers.component.html',
-  styleUrls: ['./movie-watch-providers.component.scss']
+    selector: 'app-movie-watch-providers',
+    templateUrl: './movie-watch-providers.component.html',
+    styleUrls: ['./movie-watch-providers.component.scss'],
+    standalone: true,
+    imports: [MatTooltip]
 })
 export class MovieWatchProviderComponent {
   @Input() watchProviders: Array<WatchProvider> | null | undefined;

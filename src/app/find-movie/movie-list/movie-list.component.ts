@@ -1,14 +1,20 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { map, Observable } from 'rxjs';
 import { Movie } from '../../_shared/_models';
 import { MovieDetailsService } from '../_services/movie-details.service';
 import { MovieSearchService } from '../_services/movie-search.service';
+import { AsyncPipe } from '@angular/common';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { ObserveVisibilityDirective } from '../../_shared/_directives/observe-visibility.directive';
+import { MovieCardComponent } from '../movie-card/movie-card.component';
 
 @Component({
-  selector: 'app-movie-list',
-  templateUrl: './movie-list.component.html',
-  styleUrls: ['./movie-list.component.scss']
+    selector: 'app-movie-list',
+    templateUrl: './movie-list.component.html',
+    styleUrls: ['./movie-list.component.scss'],
+    standalone: true,
+    imports: [RouterLink, MovieCardComponent, ObserveVisibilityDirective, MatProgressBar, AsyncPipe]
 })
 export class MovieListComponent implements OnInit, OnDestroy {
 

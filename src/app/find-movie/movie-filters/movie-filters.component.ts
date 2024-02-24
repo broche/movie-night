@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { ActivatedRoute, Router } from '@angular/router';
 import { debounceTime, filter, map, Observable, Subject, takeUntil } from 'rxjs';
@@ -9,11 +9,20 @@ import { WatchProviderService } from '../../_shared/_services/watch-provider.ser
 import { SortByOption, SORT_BY_OPTIONS } from '../../_shared/_consts/sort-by.const';
 import { Genre, IFindMovieFilters } from '../../_shared/_models';
 import { MovieSearchService } from '../_services/movie-search.service';
+import { AsyncPipe } from '@angular/common';
+import { MatButton } from '@angular/material/button';
+import { MatSlider, MatSliderRangeThumb, MatSliderThumb } from '@angular/material/slider';
+import { MatDivider } from '@angular/material/divider';
+import { MatOption } from '@angular/material/core';
+import { MatSelect, MatSelectTrigger } from '@angular/material/select';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
 
 @Component({
-  selector: 'app-movie-filters',
-  templateUrl: './movie-filters.component.html',
-  styleUrls: ['./movie-filters.component.scss']
+    selector: 'app-movie-filters',
+    templateUrl: './movie-filters.component.html',
+    styleUrls: ['./movie-filters.component.scss'],
+    standalone: true,
+    imports: [ReactiveFormsModule, MatFormField, MatLabel, MatSelect, MatOption, MatDivider, MatSelectTrigger, MatSlider, MatSliderRangeThumb, MatSliderThumb, MatButton, AsyncPipe]
 })
 export class MovieFiltersComponent implements OnDestroy {
 

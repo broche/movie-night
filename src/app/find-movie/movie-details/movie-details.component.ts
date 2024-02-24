@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Location } from '@angular/common';
+import { Location, AsyncPipe, CurrencyPipe, DatePipe } from '@angular/common';
 import { Observable, Subject, filter, take, takeUntil } from 'rxjs';
 import { IImage, Image } from 'src/app/_shared/_models/image.model';
 import { Video } from 'src/app/_shared/_models/video.model';
@@ -7,12 +7,24 @@ import { Movie } from '../../_shared/_models';
 import { MovieCredit } from '../../_shared/_models/movie-credit.model';
 import { WatchProvider } from '../../_shared/_models/watch-provider.model';
 import { MovieDetailsService } from '../_services/movie-details.service';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterLink } from '@angular/router';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { MovieCardComponent } from '../movie-card/movie-card.component';
+import { CastMemberCardComponent } from '../cast-member-card/cast-member-card.component';
+import { MovieWatchProviderComponent } from '../movie-watch-providers/movie-watch-providers.component';
+import { VideoComponent } from '../../_shared/components/video/video.component';
+import { MatChipListbox, MatChip } from '@angular/material/chips';
+import { MatDivider } from '@angular/material/divider';
+import { MatFabButton, MatMiniFabButton } from '@angular/material/button';
+import { MovieRatingPillComponent } from '../movie-rating-pill/movie-rating-pill.component';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-movie-details',
-  templateUrl: './movie-details.component.html',
-  styleUrls: ['./movie-details.component.scss']
+    selector: 'app-movie-details',
+    templateUrl: './movie-details.component.html',
+    styleUrls: ['./movie-details.component.scss'],
+    standalone: true,
+    imports: [MatIcon, MovieRatingPillComponent, MatFabButton, MatDivider, MatChipListbox, MatChip, VideoComponent, MatMiniFabButton, MovieWatchProviderComponent, RouterLink, CastMemberCardComponent, MovieCardComponent, MatProgressBar, AsyncPipe, CurrencyPipe, DatePipe]
 })
 export class MovieDetailsComponent {
   public movie$: Observable<Movie | undefined>;

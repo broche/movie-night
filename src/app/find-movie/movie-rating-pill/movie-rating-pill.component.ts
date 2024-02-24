@@ -1,9 +1,12 @@
 import { Component, Input } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
-  selector: 'app-movie-rating-pill',
-  templateUrl: './movie-rating-pill.component.html',
-  styleUrls: ['./movie-rating-pill.component.scss']
+    selector: 'app-movie-rating-pill',
+    templateUrl: './movie-rating-pill.component.html',
+    styleUrls: ['./movie-rating-pill.component.scss'],
+    standalone: true,
+    imports: [DecimalPipe]
 })
 export class MovieRatingPillComponent {
   @Input() rating!: number;
