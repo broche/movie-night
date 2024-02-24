@@ -22,7 +22,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSliderModule } from '@angular/material/slider';
 import { ObserveVisibilityDirective } from '../_shared/_directives/observe-visibility.directive';
 import { MovieCardComponent } from './movie-card/movie-card.component';
-import { MovieListItemComponent } from './movie-list-item/movie-list-item.component';
 import { MovieDetailsComponent } from './movie-details/movie-details.component';
 import { MovieRatingPillComponent } from './movie-rating-pill/movie-rating-pill.component';
 import { FindMovieComponent } from './find-movie.component';
@@ -41,7 +40,6 @@ import { ImageFallbackDirective } from '../_shared/_directives/image-fallback.di
     MovieListComponent,
     FindMovieComponent,
     MovieCardComponent,
-    MovieListItemComponent,
     MovieDetailsComponent,
     MovieRatingPillComponent,
     MovieWatchProviderComponent
