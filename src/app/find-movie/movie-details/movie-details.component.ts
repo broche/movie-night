@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Location } from '@angular/common';
-import { Observable, filter, take } from 'rxjs';
+import { Observable, Subject, filter, take, takeUntil } from 'rxjs';
 import { IImage, Image } from 'src/app/_shared/_models/image.model';
 import { Video } from 'src/app/_shared/_models/video.model';
 import { Movie } from '../../_shared/_models';
@@ -29,6 +29,7 @@ export class MovieDetailsComponent {
   public director$: Observable<MovieCredit | undefined>;
   public isWatching$: Observable<boolean>;
   public fromMovieList: boolean = false;
+  private readonly _unsubscribe$: Subject<void> = new Subject<void>();
 
   constructor(
     private readonly movieDetailsService: MovieDetailsService,
@@ -51,7 +52,16 @@ export class MovieDetailsComponent {
   }
 
   public ngOnInit(): void {
-    this.fromMovieList = this.activatedRoute.snapshot.queryParams['closeable'];
+    this.activatedRoute.queryParams
+      .pipe(takeUntil(this._unsubscribe$))
+      .subscribe(res => {
+        this.fromMovieList = res['closeable'] === 'true';
+      });
+  }
+
+  public ngOnDestroy(): void {
+    this._unsubscribe$.next();
+    this._unsubscribe$.complete();
   }
 
   public playTrailer(): void {
