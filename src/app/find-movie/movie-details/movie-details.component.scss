@@ -67,12 +67,11 @@
         &.isWatching {
           min-height: 450px;
         }
-        padding: 3rem;
+        padding: 3rem 1.5rem;
         @media (min-width: 845px) { 
-          padding: 3rem 1.5rem;
-          min-height: 600px;
+          min-height: 400px;
           &.isWatching {
-            min-height: 600px;
+            min-height: 400px;
           }
         }
       }
