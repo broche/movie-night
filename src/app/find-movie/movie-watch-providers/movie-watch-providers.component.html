@@ -1,11 +1,10 @@
 <ng-content></ng-content>
-<ng-container *ngIf="watchProviders?.length ?? 0 > 0; else noProviders">
+@if (watchProviders?.length ?? 0 > 0) {
   <div class="watch-provider d-flex flex-wrap align-items-center">
-    <ng-container *ngFor="let watchProvider of watchProviders">
+    @for (watchProvider of watchProviders; track watchProvider) {
       <img class="streaming-icon" [src]="watchProvider.logo" [matTooltip]="watchProvider.name" [class.has-provider]="hasProvider(watchProvider)" />
-    </ng-container>
+    }
   </div>
-</ng-container>
-<ng-template #noProviders>
+} @else {
   <p class="text-muted">Not available</p>
-</ng-template>
+}

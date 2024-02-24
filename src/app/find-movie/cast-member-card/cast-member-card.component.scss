@@ -5,10 +5,11 @@
   position: relative;
   .cast-member-card-image {
     position: relative;
+    width: 220px;
+    height: 330px;
     img {
-      width: 220px;
-      height: 330px;
-      margin: 0.5px;
+      height: 100%;
+      width: 100%;
     }
   }
   .cast-member-card-overlay {
@@ -30,11 +31,9 @@
   }
   &.sm {
     .cast-member-card-image {
-      img {
-        width: 80px;
-        height: 120px;
-        border-radius: 5px;
-      }
+      width: 80px;
+      height: 120px;
+      border-radius: 5px;
     }
   }
 }

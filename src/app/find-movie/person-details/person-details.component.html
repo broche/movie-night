@@ -1,38 +1,41 @@
-<ng-container *ngIf="person$ | async as person">
+@if (person$ | async; as person) {
   <div class="person-details">
+    
+    <div class="toggle-wrapper">
+      <div class="toggle" (click)="location.back()">
+        <mat-icon>arrow_back</mat-icon>
+      </div>
+    </div>
     <div class="additional">
       <div class="info">
         <h1 class="m-0">{{person.name}}</h1>
         <p>Born {{person.birthday | date: 'MM/dd/yyyy' }} in {{person.birthplace}}</p>
       </div>
       <!-- <div class="image-wrap">
-        <div class="d-flex align-items-center flex-wrap">
-          <ng-container *ngFor="let image of (images$ | async)">
-            <img class="person-image" [src]="image.path" />
-          </ng-container>
-        </div>
-      </div> -->
-      <mat-divider></mat-divider>
-      
-      <p>Featured in...</p>
-      <div class="d-flex align-items-center justify-content-center flex-wrap">
-        <ng-container *ngFor="let movie of movieCredits$ | async">
-          <a [routerLink]="['/find-a-movie', { outlets: { details: ['movie', movie.id] } }]">
-            <app-movie-card [movie]="movie" size="sm"></app-movie-card>
-          </a>
+      <div class="d-flex align-items-center flex-wrap">
+        <ng-container *ngFor="let image of (images$ | async)">
+          <img class="person-image" [src]="image.path" />
         </ng-container>
       </div>
-      <mat-divider></mat-divider>
-      
-      <!-- <div class="extra">
-        <ng-container *ngIf="director$ | async as director">
-          <p>Director: {{director.name}}</p>
-        </ng-container>
-        <p>Release Date: {{movie.releaseDate | date}}</p>
-        <p>Revenue: {{movie.revenue | currency}}</p>
-        <p>Budget: {{movie.budget | currency}}</p>
-      </div> -->
+    </div> -->
+    <mat-divider></mat-divider>
+    <p>Featured in...</p>
+    <div class="d-flex align-items-center justify-content-center flex-wrap">
+      @for (movie of movieCredits$ | async; track movie) {
+        <a [routerLink]="['/find-a-movie', { outlets: { details: ['movie', movie.id] } }]">
+          <app-movie-card [movie]="movie" size="sm"></app-movie-card>
+        </a>
+      }
     </div>
-  </div>
-
-</ng-container>
+    <mat-divider></mat-divider>
+    <!-- <div class="extra">
+    <ng-container *ngIf="director$ | async as director">
+      <p>Director: {{director.name}}</p>
+    </ng-container>
+    <p>Release Date: {{movie.releaseDate | date}}</p>
+    <p>Revenue: {{movie.revenue | currency}}</p>
+    <p>Budget: {{movie.budget | currency}}</p>
+  </div> -->
+</div>
+</div>
+}

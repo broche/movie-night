@@ -1,32 +1,25 @@
 <mat-sidenav-container autosize>
 
   <!-- Filters Pane (Left) -->
-  <mat-sidenav 
+  <mat-sidenav
     #filters
-    [mode]="filtersMode" 
+    [mode]="filtersMode"
     [fixedInViewport]="true">
     <app-movie-filters></app-movie-filters>
   </mat-sidenav>
 
   <!-- Details Pane (Right) -->
-  <mat-sidenav 
+  <mat-sidenav
     #details
-    [mode]="detailsMode" 
-    position="end" 
-    [fixedInViewport]="true" 
+    [mode]="detailsMode"
+    position="end"
+    [fixedInViewport]="true"
     (closedStart)="destroySidenav()">
     <router-outlet name="details"></router-outlet>
   </mat-sidenav>
 
   <!-- Main Content (middle) -->
   <div class="main p-sm-0 p-md-3" [class.watching]="isWatching$ | async">
-    <ng-container *ngIf="details.opened">
-      <div class="toggle-wrapper right">
-        <div class="toggle" (click)="details.toggle()">
-          <mat-icon>close</mat-icon>
-        </div>
-      </div>
-    </ng-container>
     <div class="toggle-wrapper left">
       <div class="toggle" (click)="filters.toggle()">
         <mat-icon>menu</mat-icon>

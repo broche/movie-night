@@ -1,101 +1,115 @@
-<ng-container *ngIf="movie$ | async as movie">
-  <div class="movie-details">
+@if (movie$ | async; as movie) {
+  <div class="movie-details" [style]="movie.viewTransitionId">
+    <div class="toggle-wrapper">
+      @if (fromMovieList) {
+        <div class="toggle" (click)="close()">
+          <mat-icon>close</mat-icon>
+        </div>
+      } @else {
+        <div class="toggle" (click)="location.back()">
+          <mat-icon>arrow_back</mat-icon>
+        </div>
+      }
+    </div>
     <div class="content" >
       <div class="inner d-flex flex-column justify-content-between" [class.isWatching]="isWatching$ | async">
-        <ng-container *ngIf="!(isWatching$ | async)">
+        @if (!(isWatching$ | async)) {
           <div class="d-flex align-items-center justify-content-between title-wrap">
             <h1 class="movie-title m-0">{{movie.title}} ({{movie.releaseDate | date: 'y'}})</h1>
             <app-movie-rating-pill [rating]="movie.voteAverage" size="lg"></app-movie-rating-pill>
           </div>
-          <ng-container *ngIf="trailerId$ | async as trailerId">
+          @if (trailerId$ | async; as trailerId) {
             <div class="d-flex align-items-center justify-content-center w-100">
               <!-- <button mat-fab color="accent" [routerLink]="['/find-a-movie', { outlets: { details: ['trailer', trailerId] } }]"><mat-icon>play_arrow</mat-icon></button> -->
               <button mat-fab color="primary" (click)="playTrailer()"><mat-icon>play_arrow</mat-icon></button>
             </div>
-          </ng-container>
+          }
           <div>
             <p class="overview">{{movie.overview}}</p>
             <mat-divider></mat-divider>
             <div class="d-flex align-items-center justify-content-between">
               <mat-chip-listbox class="genre-chips">
-                <mat-chip *ngFor="let genre of movie.genres">
-                  {{ genre.name }}
-                </mat-chip>
+                @for (genre of movie.genres; track genre) {
+                  <mat-chip>
+                    {{ genre.name }}
+                  </mat-chip>
+                }
               </mat-chip-listbox>
               <div class="runtime">{{movie.runtime}} minutes</div>
             </div>
           </div>
-        </ng-container>
-        <ng-container *ngIf="isWatching$ | async; else imageBackdrop">
-          <ng-container *ngIf="trailerId$ | async as trailerId; else noTrailer">
+        }
+        @if (isWatching$ | async) {
+          @if (trailerId$ | async; as trailerId) {
             <app-video [videoId]="trailerId" [autoplay]="true"></app-video>
-          </ng-container>
+          } @else {
+            <div class="text-center m-5">
+              No trailer available...
+            </div>
+          }
           <button class="close-trailer" mat-mini-fab color="primary" (click)="stopTrailer()">
             <mat-icon>close</mat-icon>
           </button>
-        </ng-container>
-        <ng-template #noTrailer>
-          <div class="text-center m-5">
-            No trailer available...
-          </div>
-        </ng-template>
-        <ng-template #imageBackdrop>
+        } @else {
           <div class="image-backdrop" [style.background-image]="'url(' + movie.backdrop + ')'"></div>
-        </ng-template>
+        }
       </div>
     </div>
-    <div class="additional">
-      <!-- <mat-tab-group>
-        <mat-tab label="Stream">
-          <app-movie-watch-providers [watchProviders]="streamingOptions$ | async"></app-movie-watch-providers>
-        </mat-tab>
-        <mat-tab label="Rent">
-          <app-movie-watch-providers [watchProviders]="rentalOptions$ | async"></app-movie-watch-providers>
-        </mat-tab>
-        <mat-tab label="Buy">
-          <app-movie-watch-providers [watchProviders]="purchaseOptions$ | async"></app-movie-watch-providers>
-        </mat-tab>
-      </mat-tab-group> -->
-      <app-movie-watch-providers [watchProviders]="streamingOptions$ | async">
-        <p>Streaming</p>
-      </app-movie-watch-providers>
 
-      <mat-divider></mat-divider>
-      <p>Top Billed Cast</p>
-      <div class="d-flex align-items-center credits scroll-x">
-        <ng-container *ngFor="let credit of castMembers$ | async">
-          <a [routerLink]="['/find-a-movie', { outlets: { details: ['person', credit.personId] } }]">
-            <app-cast-member-card [credit]="credit" size="sm"></app-cast-member-card>
-          </a>
-        </ng-container>
-      </div>
-      <mat-divider></mat-divider>
-      <p>You might also like...</p>
-      <div class="d-flex align-items-center similar-wrap scroll-x">
-        <ng-container *ngFor="let movie of similarMovies$ | async">
-          <a [routerLink]="['/find-a-movie', { outlets: { details: ['movie', movie.id] } }]">
-            <app-movie-card [movie]="movie" size="sm"></app-movie-card>
-          </a>
-        </ng-container>
-      </div>
-      <mat-divider></mat-divider>
-      <!-- <p>Images</p>
-      <div class="d-flex align-items-center flex-wrap">
-        <ng-container *ngFor="let image of (posterImages$ | async) | slice:0:10">
-          <img class="poster-image" [src]="image.path" />
-        </ng-container>
-      </div>
-      <mat-divider></mat-divider> -->
+      <div class="additional">
       
-      <div class="extra">
-        <ng-container *ngIf="director$ | async as director">
-          <p>Director: {{director.name}}</p>
-        </ng-container>
-        <p>Release Date: {{movie.releaseDate | date}}</p>
-        <p>Revenue: {{movie.revenue | currency}}</p>
-        <p>Budget: {{movie.budget | currency}}</p>
+        <app-movie-watch-providers [watchProviders]="streamingOptions$ | async">
+          <p>Streaming</p>
+        </app-movie-watch-providers>
+  
+        <mat-divider></mat-divider>
+  
+        <p>Top Billed Cast</p>
+        <div class="d-flex align-items-center credits scroll-x">
+          @for (credit of castMembers$ | async; track credit; let i = $index) {
+            @defer {
+              <a [routerLink]="['/find-a-movie', { outlets: { details: ['person', credit.personId] } }]">
+                <app-cast-member-card [credit]="credit" size="sm"></app-cast-member-card>
+              </a>
+            }
+            @placeholder {
+              <app-cast-member-card size="sm"></app-cast-member-card>
+            }
+          }
+        </div>
+  
+        <mat-divider></mat-divider>
+  
+        <p>You might also like...</p>
+        <div class="d-flex align-items-center similar-wrap scroll-x">
+          @for (movie of similarMovies$ | async; track movie) {
+            <a [routerLink]="['/find-a-movie', { outlets: { details: ['movie', movie.id] } }]">
+              <app-movie-card [movie]="movie" size="sm"></app-movie-card>
+            </a>
+          }
+        </div>
+  
+        <mat-divider></mat-divider>
+        
+        <!-- <p>Images</p>
+        <div class="d-flex align-items-center flex-wrap">
+          <ng-container *ngFor="let image of (posterImages$ | async) | slice:0:10">
+            <img class="poster-image" [src]="image.path" />
+          </ng-container>
+        </div>
+        <mat-divider></mat-divider> -->
+  
+        <div class="extra">
+          @if (director$ | async; as director) {
+            <p>Director: {{director.name}}</p>
+          }
+          <p>Release Date: {{movie.releaseDate | date}}</p>
+          <p>Revenue: {{movie.revenue | currency}}</p>
+          <p>Budget: {{movie.budget | currency}}</p>
+        </div>
+  
       </div>
-    </div>
   </div>
-
-</ng-container>
+} @else {
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+}

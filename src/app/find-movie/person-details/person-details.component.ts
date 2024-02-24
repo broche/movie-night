@@ -1,9 +1,11 @@
 import { Component, Input } from '@angular/core';
+import { Location } from '@angular/common';
 import { filter, map, Observable } from 'rxjs';
 import { Movie } from 'src/app/_shared/_models';
 import { Image } from 'src/app/_shared/_models/image.model';
 import { Person } from 'src/app/_shared/_models/person.model';
 import { PersonDetailsService } from '../_services/person-details.service';
+import { MovieDetailsService } from '../_services/movie-details.service';
 
 @Component({
   selector: 'app-person-details',
@@ -18,7 +20,9 @@ export class PersonDetailsComponent {
   public backdrop$: Observable<string | undefined>;
 
   constructor(
-    private readonly personDetailsService: PersonDetailsService
+    private readonly personDetailsService: PersonDetailsService,
+    private readonly movieDetailsService: MovieDetailsService,
+    protected readonly location: Location
   ) {
     this.person$ = personDetailsService.person$;
     this.movieCredits$ = personDetailsService.movieCredits$;

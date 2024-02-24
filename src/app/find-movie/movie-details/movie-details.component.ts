@@ -1,11 +1,13 @@
 import { Component, Input } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Location } from '@angular/common';
+import { Observable, filter, take } from 'rxjs';
 import { IImage, Image } from 'src/app/_shared/_models/image.model';
 import { Video } from 'src/app/_shared/_models/video.model';
 import { Movie } from '../../_shared/_models';
 import { MovieCredit } from '../../_shared/_models/movie-credit.model';
 import { WatchProvider } from '../../_shared/_models/watch-provider.model';
 import { MovieDetailsService } from '../_services/movie-details.service';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-movie-details',
@@ -26,17 +28,20 @@ export class MovieDetailsComponent {
   public trailerId$: Observable<string | undefined>;
   public director$: Observable<MovieCredit | undefined>;
   public isWatching$: Observable<boolean>;
+  public fromMovieList: boolean = false;
 
   constructor(
-    private readonly movieDetailsService: MovieDetailsService
+    private readonly movieDetailsService: MovieDetailsService,
+    protected readonly location: Location,
+    private readonly activatedRoute: ActivatedRoute
   ) {
     this.movie$ = movieDetailsService.movie$;
     this.rentalOptions$ = movieDetailsService.rentalOptions$;
     this.purchaseOptions$ = movieDetailsService.purchaseOptions$;
     this.streamingOptions$ = movieDetailsService.streamingOptions$;
-    this.similarMovies$ = movieDetailsService.similarMovies$;    
+    this.similarMovies$ = movieDetailsService.similarMovies$;
     this.castMembers$ = movieDetailsService.castMembers$;
-    this.crewMembers$ = movieDetailsService.crewMembers$;  
+    this.crewMembers$ = movieDetailsService.crewMembers$;
     this.posterImages$ = movieDetailsService.posterImages$;
     this.backdropImages$ = movieDetailsService.backdropImages$;
     this.videos$ = movieDetailsService.videos$;
@@ -45,11 +50,19 @@ export class MovieDetailsComponent {
     this.isWatching$ = movieDetailsService.isWatching$;
   }
 
+  public ngOnInit(): void {
+    this.fromMovieList = this.activatedRoute.snapshot.queryParams['closeable'];
+  }
+
   public playTrailer(): void {
     this.movieDetailsService.startWatching();
   }
 
   public stopTrailer(): void {
     this.movieDetailsService.stopWatching();
+  }
+
+  public close(): void {
+    this.movieDetailsService.close();
   }
 }

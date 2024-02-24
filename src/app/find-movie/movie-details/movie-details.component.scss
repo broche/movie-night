@@ -2,17 +2,41 @@
 :host {
   display: block;
   height: 100%;
-  width: 90vw;
+  width: 100vw;
 
   @media (min-width: 845px) { 
     width: 760px;
+    min-width: 760px;
   }
   
   mat-divider {
     margin-top: 1rem;
     margin-bottom: 1rem;
   }
+
+  .main {
+    position: relative;
+    height: 100vh;
+    overflow-y: scroll;
+  
+  }
   .movie-details {
+    .toggle-wrapper {
+      position: absolute;
+      top: 0;
+      z-index: 100;
+      left: 0;
+
+      
+      // @media (min-width: 845px) { 
+      //   display: none;
+      // }
+
+      .toggle {
+        padding: 1rem;
+        cursor: pointer;
+      }
+    }
     .content {
       width: 100%;
       display:block;
@@ -39,16 +63,18 @@
 
       .inner {
         position: relative;
+        min-height: 450px;
         &.isWatching {
-          min-height: 310px;
+          min-height: 450px;
         }
+        padding: 3rem;
         @media (min-width: 845px) { 
+          padding: 3rem 1.5rem;
           min-height: 400px;
           &.isWatching {
             min-height: 400px;
           }
         }
-        padding: 1.5rem;
       }
     }
     .title-wrap {

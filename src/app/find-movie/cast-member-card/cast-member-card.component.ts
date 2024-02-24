@@ -7,6 +7,6 @@ import { MovieCredit } from 'src/app/_shared/_models/movie-credit.model';
   styleUrls: ['./cast-member-card.component.scss']
 })
 export class CastMemberCardComponent {
-  @Input() credit!: MovieCredit;
+  @Input() credit?: MovieCredit;
   @Input() size?: 'sm' | 'md' | 'lg' = 'md';
 }

@@ -1,13 +1,14 @@
 <div class="movie-results d-flex flex-wrap justify-content-center mt-5" [class.has-selection]="selectedMovie$ | async">
-  <ng-container *ngFor="let movie of movieResults$ | async">
+  @for (movie of movieResults$ | async; track movie) {
     <a [routerLink]="[{ outlets: { details: ['movie', movie.id] } }]"
-       [class.selected]="movie.id === (selectedMovie$ | async)?.id">
+      [queryParams]="{ closeable: true }"
+      [class.selected]="movie.id === (selectedMovie$ | async)?.id">
       <app-movie-card [movie]="movie"></app-movie-card>
     </a>
-  </ng-container>
+  }
 </div>
-<ng-container *ngIf="canLoadMore$ | async">
+@if (canLoadMore$ | async) {
   <div appObserveVisibility (visible)="loadMore()">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   </div>
-</ng-container>
+}

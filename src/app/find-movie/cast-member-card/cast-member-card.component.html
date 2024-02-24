@@ -1,8 +1,16 @@
-<div class="cast-member-card {{ size }}">
-  <div class="cast-member-card-overlay d-flex align-items-start justify-content-end flex-column">
-    <div class="title">{{credit.name}}</div>
+@if (credit) {
+  <div class="cast-member-card {{ size }}">
+    <div class="cast-member-card-overlay d-flex align-items-start justify-content-end flex-column">
+      <div class="title">{{credit.name}}</div>
+    </div>
+    <div class="cast-member-card-image">
+      <img mat-card-image [src]="credit.image" default="/assets/images/blank.PNG"  [matTooltip]="credit.name">
+    </div>
   </div>
-  <div class="cast-member-card-image">
-    <img mat-card-image [src]="credit.image" default="/assets/images/blank.PNG"  [matTooltip]="credit.name">
+} @else {
+  <div class="cast-member-card {{ size }}">
+    <div class="cast-member-card-image">
+      <img mat-card-image  default="/assets/images/blank.PNG">
+    </div>
   </div>
-</div>
+}
