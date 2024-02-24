@@ -67,10 +67,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "movie-night:build:production"
+              "buildTarget": "movie-night:build:production"
             },
             "development": {
-              "browserTarget": "movie-night:build:development"
+              "buildTarget": "movie-night:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -78,7 +78,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "movie-night:build"
+            "buildTarget": "movie-night:build"
           }
         },
         "test": {
