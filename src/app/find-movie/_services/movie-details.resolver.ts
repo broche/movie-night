@@ -1,16 +1,12 @@
 import { Injectable } from '@angular/core';
-import {
-  Resolve,
-  RouterStateSnapshot,
-  ActivatedRouteSnapshot
-} from '@angular/router';
+import { RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 import { filter, map, Observable, of, tap } from 'rxjs';
 import { MovieDetailsService } from './movie-details.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MovieDetailsResolver implements Resolve<boolean> {
+export class MovieDetailsResolver  {
 
   constructor(
     private readonly movieDetailsService: MovieDetailsService
